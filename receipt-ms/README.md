@@ -91,6 +91,9 @@ cd receipt-ms
 # Install dependencies
 npm install
 
+# Quick setup for Chrome DevTools MCP testing
+./setup-mcp.sh
+
 # Start development server
 npm run dev
 
@@ -105,6 +108,7 @@ npm run preview
 ```
 
 ### Available Scripts
+- `./setup-mcp.sh` - Quick setup for Chrome DevTools MCP testing
 - `npm run dev` - Start development server (http://localhost:5173)
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
