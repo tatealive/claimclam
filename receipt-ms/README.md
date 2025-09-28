@@ -70,7 +70,7 @@ A modern, responsive **Receipt Management System** built with React 18 and TypeS
 | **Zod** | Schema Validation | 4.1.11 |
 | **TanStack Table** | Data Table Component | 8.21.3 |
 | **Zustand** | State Management | 5.0.8 |
-| **React Router DOM** | Client-side Routing | 7.9.3 |
+| **TanStack Router DOM** | Client-side Routing | 7.9.3 |
 | **Headless UI** | Accessible UI Components | 2.2.9 |
 | **Heroicons** | Icon Library | 2.2.0 |
 | **Fuse.js** | Fuzzy Search | 7.1.0 |

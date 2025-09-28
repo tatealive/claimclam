@@ -1,0 +1,30 @@
+
+Test: Network Request Analysis
+Description: Analyze network requests and API responses
+URL: http://localhost:5174
+
+Expected Actions:
+1. Navigate to http://localhost:5174
+2. Perform debugging analysis
+3. Monitor system behavior
+4. Capture debugging data
+5. Generate debugging report
+
+MCP Tools to Use:
+- navigate_page: Navigate to pages
+- list_network_requests: Monitor network activity
+- get_network_request: Analyze specific requests
+- list_console_messages: Monitor console output
+- evaluate_script: Execute JavaScript analysis
+- take_snapshot: Capture DOM state
+- take_screenshot: Visual debugging
+
+Expected Outcome: All network requests successful and optimized
+
+Focus on:
+- Network request optimization
+- Console error detection
+- JavaScript performance analysis
+- Resource loading efficiency
+- Memory leak detection
+- Error boundary effectiveness

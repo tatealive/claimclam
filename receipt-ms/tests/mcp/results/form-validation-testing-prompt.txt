@@ -1,0 +1,33 @@
+
+Test: Form Validation Testing
+Description: Automate form validation error testing
+URL: http://localhost:5174/submit
+
+Expected Actions:
+1. Navigate to http://localhost:5174/submit
+2. Perform automated user interactions
+3. Wait for actions to complete
+4. Take screenshots at key points
+5. Verify expected outcomes
+
+MCP Tools to Use:
+- navigate_page: Navigate to pages
+- fill_form: Fill out forms
+- upload_file: Upload files
+- click: Click buttons and links
+- wait_for: Wait for elements to load
+- take_screenshot: Capture visual state
+- resize_page: Test responsive design
+- emulate_network: Test network conditions
+- new_page: Test multi-tab scenarios
+- select_page: Switch between tabs
+
+Expected Outcome: All validation errors displayed correctly
+
+Focus on:
+- User interaction reliability
+- Form submission accuracy
+- Error handling robustness
+- Responsive design adaptation
+- Network error recovery
+- Concurrent usage stability

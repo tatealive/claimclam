@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-27T01:59:09.300Z",
+  "baseUrl": "http://localhost:5174",
+  "tests": [
+    {
+      "name": "Core Web Vitals Analysis",
+      "passed": true,
+      "timestamp": "2025-09-27T01:59:09.299Z"
+    },
+    {
+      "name": "Form Submission Performance",
+      "passed": true,
+      "timestamp": "2025-09-27T01:59:09.300Z"
+    },
+    {
+      "name": "Dashboard Rendering Performance",
+      "passed": true,
+      "timestamp": "2025-09-27T01:59:09.300Z"
+    },
+    {
+      "name": "Memory Usage Analysis",
+      "passed": true,
+      "timestamp": "2025-09-27T01:59:09.300Z"
+    }
+  ],
+  "summary": {
+    "totalTests": 4,
+    "passedTests": 4,
+    "failedTests": 0,
+    "successRate": 100
+  },
+  "recommendations": [
+    "Performance is excellent - maintain current standards"
+  ]
+}
