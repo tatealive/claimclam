@@ -1,2 +1,24 @@
+/* Tailwind v4 + HeroUI core layers */
 @import "tailwindcss/preflight";
+@import "tailwindcss/theme";
 @import "tailwindcss/utilities";
+
+/* Opinionated but safe defaults */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Balance text wrapping for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Ensure full height including mobile safe areas */
+  .min-h-screen-safe {
+    min-height: 100dvh;
+  }
+}
