@@ -263,8 +263,42 @@ export function ReviewDashboard() {
 
         {/* Search and Filters */}
         <div className="bg-white shadow rounded-lg mb-6">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="flex flex-col sm:flex-row gap-4">
+          <div className="px-4 py-4 sm:p-6">
+            {/* Mobile Layout */}
+            <div className="sm:hidden space-y-3">
+              {/* Search - Full Width */}
+              <div className="relative">
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search receipts..."
+                  value={globalFilter}
+                  onChange={(e) => setGlobalFilter(e.target.value)}
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm"
+                />
+              </div>
+              
+              {/* Filter Controls */}
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  <FunnelIcon className="h-4 w-4 mr-1" />
+                  Filters
+                </button>
+                <button
+                  onClick={clearAllFilters}
+                  className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  <XMarkIcon className="h-4 w-4 mr-1" />
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex flex-col sm:flex-row gap-4">
               {/* Search */}
               <div className="flex-1">
                 <div className="relative">
@@ -455,7 +489,7 @@ export function ReviewDashboard() {
         </div>
 
         {/* Mobile Card View */}
-        <div className="sm:hidden space-y-4">
+        <div className="sm:hidden space-y-3">
           {table.getRowModel().rows.map(row => {
             const receipt = row.original;
             const statusColors = {
@@ -465,74 +499,67 @@ export function ReviewDashboard() {
             };
             
             return (
-              <div key={row.id} className="bg-white shadow rounded-lg border border-gray-200 p-4">
-                {/* Card Header with Selection and Status */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-3">
+              <div key={row.id} className="bg-white shadow-sm rounded-lg border border-gray-200 p-3">
+                {/* Card Header - Compact with Status Badge */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center space-x-2">
                     <input
                       type="checkbox"
                       checked={row.getIsSelected()}
                       onChange={(e) => row.toggleSelected(!!e.target.checked)}
                       className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                     />
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[receipt.status]}`}>
-                      {receipt.status}
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {new Date(receipt.submittedDate).toLocaleDateString()}
-                  </div>
-                </div>
-
-                {/* Card Content */}
-                <div className="space-y-2 mb-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-500">Employee</span>
-                    <span className="text-sm text-gray-900">{receipt.employeeName}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-500">Amount</span>
-                    <span className="text-sm font-semibold text-gray-900">${receipt.amount.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-500">Vendor</span>
-                    <span className="text-sm text-gray-900">{receipt.vendor}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-500">Category</span>
-                    <span className="text-sm text-gray-900">{receipt.category}</span>
-                  </div>
-                  {receipt.description && (
-                    <div className="pt-2 border-t border-gray-100">
-                      <span className="text-sm font-medium text-gray-500">Description</span>
-                      <p className="text-sm text-gray-900 mt-1">{receipt.description}</p>
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-900">{receipt.employeeName}</h3>
+                      <p className="text-lg font-bold text-gray-900">${receipt.amount.toFixed(2)}</p>
                     </div>
-                  )}
+                  </div>
+                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${statusColors[receipt.status]}`}>
+                    {receipt.status}
+                  </span>
                 </div>
 
-                {/* Card Actions */}
-                <div className="flex justify-end space-x-2 pt-3 border-t border-gray-100">
+                {/* Card Content - Two Column Layout */}
+                <div className="grid grid-cols-2 gap-2 mb-3 text-sm">
+                  <div>
+                    <p className="text-gray-600">{receipt.vendor}</p>
+                    <p className="text-gray-500 text-xs">{receipt.category}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-gray-600">{new Date(receipt.submittedDate).toLocaleDateString()}</p>
+                    {receipt.description && (
+                      <p className="text-gray-500 text-xs truncate" title={receipt.description}>
+                        {receipt.description}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Card Actions - Full Width Stacked */}
+                <div className="space-y-2 pt-2 border-t border-gray-100">
                   <button
                     onClick={() => setSelectedReceipt(receipt)}
-                    className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <EyeIcon className="h-3 w-3 mr-1" />
-                    View
+                    <EyeIcon className="h-4 w-4 mr-2" />
+                    View Details
                   </button>
-                  <button
-                    onClick={() => updateReceipt(receipt.id, { status: 'Approved' })}
-                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  >
-                    <CheckIcon className="h-3 w-3 mr-1" />
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => updateReceipt(receipt.id, { status: 'Rejected' })}
-                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    <RejectIcon className="h-3 w-3 mr-1" />
-                    Reject
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => updateReceipt(receipt.id, { status: 'Approved' })}
+                      className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    >
+                      <CheckIcon className="h-4 w-4 mr-1" />
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => updateReceipt(receipt.id, { status: 'Rejected' })}
+                      className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    >
+                      <RejectIcon className="h-4 w-4 mr-1" />
+                      Reject
+                    </button>
+                  </div>
                 </div>
               </div>
             );
