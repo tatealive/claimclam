@@ -77,6 +77,27 @@ export function FilePreview({
       );
     }
 
+    if (isImage && !displaySrc) {
+      // Image placeholder when no actual image is available
+      return (
+        <div 
+          className={`cursor-pointer hover:bg-gray-50 transition-colors border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-4 ${className}`}
+          style={{ width, height }}
+          onClick={handleClick}
+        >
+          <PhotoIcon className="h-8 w-8 text-blue-500 mb-2" />
+          <span className="text-xs text-gray-600 text-center">
+            {mimeType === 'image/jpeg' ? 'JPG' : 'PNG'}
+          </span>
+          {fileName && (
+            <span className="text-xs text-gray-500 truncate max-w-full" title={fileName}>
+              {fileName}
+            </span>
+          )}
+        </div>
+      );
+    }
+
     if (isPdf) {
       return (
         <div 
