@@ -10,7 +10,6 @@ import {
   SortingState,
   ColumnFiltersState,
   RowSelectionState,
-  ColumnResizeMode,
 } from '@tanstack/react-table';
 import { useReceipts } from '../store/receiptStore';
 import type { Receipt } from '../types';
@@ -69,7 +68,6 @@ export function ReviewDashboard() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState('');
-  const [columnSizing, setColumnSizing] = useState({});
   const [selectedReceipt, setSelectedReceipt] = useState<Receipt | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
@@ -148,22 +146,16 @@ export function ReviewDashboard() {
         ),
         enableSorting: false,
         enableHiding: false,
-        size: 50,
-        minSize: 50,
-        maxSize: 50,
       }),
       columnHelper.accessor('submittedDate', {
         header: () => (
           <div className="flex items-center space-x-1">
             <CalendarDaysIcon className="h-4 w-4" />
-            <span>Date Submitted</span>
+            <span>Date</span>
           </div>
         ),
         cell: (info) => new Date(info.getValue()).toLocaleDateString(),
         sortingFn: 'datetime',
-        size: 120,
-        minSize: 100,
-        maxSize: 150,
       }),
       columnHelper.accessor('employeeName', {
         header: () => (
@@ -173,9 +165,6 @@ export function ReviewDashboard() {
           </div>
         ),
         cell: (info) => info.getValue(),
-        size: 150,
-        minSize: 120,
-        maxSize: 200,
       }),
       columnHelper.accessor('department', {
         header: () => (
@@ -185,9 +174,6 @@ export function ReviewDashboard() {
           </div>
         ),
         cell: (info) => info.getValue(),
-        size: 120,
-        minSize: 100,
-        maxSize: 150,
       }),
       columnHelper.accessor('amount', {
         header: () => (
@@ -198,9 +184,6 @@ export function ReviewDashboard() {
         ),
         cell: (info) => `$${info.getValue().toFixed(2)}`,
         sortingFn: 'basic',
-        size: 100,
-        minSize: 80,
-        maxSize: 120,
       }),
       columnHelper.accessor('vendor', {
         header: () => (
@@ -210,9 +193,6 @@ export function ReviewDashboard() {
           </div>
         ),
         cell: (info) => info.getValue(),
-        size: 150,
-        minSize: 120,
-        maxSize: 200,
       }),
       columnHelper.accessor('category', {
         header: () => (
@@ -222,9 +202,6 @@ export function ReviewDashboard() {
           </div>
         ),
         cell: (info) => info.getValue(),
-        size: 120,
-        minSize: 100,
-        maxSize: 150,
       }),
       columnHelper.accessor('description', {
         header: () => (
@@ -233,10 +210,14 @@ export function ReviewDashboard() {
             <span>Description</span>
           </div>
         ),
-        cell: (info) => info.getValue() || '-',
-        size: 200,
-        minSize: 150,
-        maxSize: 300,
+        cell: (info) => {
+          const description = info.getValue() || '-';
+          return (
+            <div className="max-w-xs truncate" title={description}>
+              {description}
+            </div>
+          );
+        },
       }),
       columnHelper.accessor('status', {
         header: () => (
@@ -258,9 +239,6 @@ export function ReviewDashboard() {
             </span>
           );
         },
-        size: 100,
-        minSize: 80,
-        maxSize: 120,
       }),
       columnHelper.display({
         id: 'actions',
@@ -301,9 +279,6 @@ export function ReviewDashboard() {
           </div>
         ),
         enableSorting: false,
-        size: 120,
-        minSize: 100,
-        maxSize: 150,
       }),
     ],
     [updateReceipt]
@@ -317,14 +292,11 @@ export function ReviewDashboard() {
       columnFilters,
       rowSelection,
       globalFilter,
-      columnSizing,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    onColumnSizingChange: setColumnSizing,
-    columnResizeMode: 'onChange' as ColumnResizeMode,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -582,18 +554,14 @@ export function ReviewDashboard() {
         {/* Desktop Table View */}
         <div className="hidden sm:block bg-white shadow rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table 
-              className="min-w-full divide-y divide-gray-200"
-              style={{ width: table.getCenterTotalSize() }}
-            >
+            <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map(header => (
                       <th
                         key={header.id}
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 relative"
-                        style={{ width: header.getSize() }}
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         <div className="flex items-center space-x-1">
@@ -614,18 +582,6 @@ export function ReviewDashboard() {
                             </span>
                           )}
                         </div>
-                        {header.column.getCanResize() && (
-                          <div
-                            onMouseDown={header.getResizeHandler()}
-                            onTouchStart={header.getResizeHandler()}
-                            className={`absolute right-0 top-0 h-full w-1 bg-gray-300 cursor-col-resize select-none touch-none ${
-                              header.column.getIsResizing() ? 'bg-blue-500' : 'hover:bg-gray-400'
-                            }`}
-                            style={{
-                              transform: 'translateX(50%)',
-                            }}
-                          />
-                        )}
                       </th>
                     ))}
                   </tr>
@@ -644,7 +600,6 @@ export function ReviewDashboard() {
                           className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${
                             !isCheckboxCell && !isActionsCell ? 'cursor-pointer' : ''
                           }`}
-                          style={{ width: cell.column.getSize() }}
                           onClick={!isCheckboxCell && !isActionsCell ? () => setSelectedReceipt(row.original) : undefined}
                         >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
