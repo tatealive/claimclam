@@ -186,20 +186,25 @@ export function ReviewDashboard() {
             >
               <EyeIcon className="h-4 w-4" />
             </button>
-            <button
-              onClick={() => updateReceipt(row.original.id, { status: 'Approved' })}
-              className="text-green-600 hover:text-green-900"
-              title="Approve"
-            >
-              <CheckIcon className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => updateReceipt(row.original.id, { status: 'Rejected' })}
-              className="text-red-600 hover:text-red-900"
-              title="Reject"
-            >
-              <RejectIcon className="h-4 w-4" />
-            </button>
+            {/* Only show approve/reject buttons for pending receipts */}
+            {row.original.status === 'Pending' && (
+              <>
+                <button
+                  onClick={() => updateReceipt(row.original.id, { status: 'Approved' })}
+                  className="text-green-600 hover:text-green-900"
+                  title="Approve"
+                >
+                  <CheckIcon className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => updateReceipt(row.original.id, { status: 'Rejected' })}
+                  className="text-red-600 hover:text-red-900"
+                  title="Reject"
+                >
+                  <RejectIcon className="h-4 w-4" />
+                </button>
+              </>
+            )}
           </div>
         ),
         enableSorting: false,
@@ -605,28 +610,55 @@ export function ReviewDashboard() {
                     <EyeIcon className="h-5 w-5 mr-2" />
                     View Details
                   </button>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        updateReceipt(receipt.id, { status: 'Approved' });
-                      }}
-                      className="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[44px]"
-                    >
-                      <CheckIcon className="h-5 w-5 mr-2" />
-                      Approve
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        updateReceipt(receipt.id, { status: 'Rejected' });
-                      }}
-                      className="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 min-h-[44px]"
-                    >
-                      <RejectIcon className="h-5 w-5 mr-2" />
-                      Reject
-                    </button>
-                  </div>
+                  
+                  {/* Only show approve/reject buttons for pending receipts */}
+                  {receipt.status === 'Pending' && (
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateReceipt(receipt.id, { status: 'Approved' });
+                        }}
+                        className="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[44px]"
+                      >
+                        <CheckIcon className="h-5 w-5 mr-2" />
+                        Approve
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updateReceipt(receipt.id, { status: 'Rejected' });
+                        }}
+                        className="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 min-h-[44px]"
+                      >
+                        <RejectIcon className="h-5 w-5 mr-2" />
+                        Reject
+                      </button>
+                    </div>
+                  )}
+                  
+                  {/* Show status message for non-pending receipts */}
+                  {receipt.status !== 'Pending' && (
+                    <div className="text-center py-2">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        receipt.status === 'Approved' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {receipt.status === 'Approved' ? (
+                          <>
+                            <CheckIcon className="h-4 w-4 mr-1" />
+                            Already Approved
+                          </>
+                        ) : (
+                          <>
+                            <RejectIcon className="h-4 w-4 mr-1" />
+                            Already Rejected
+                          </>
+                        )}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -635,21 +667,64 @@ export function ReviewDashboard() {
 
         {/* Pagination */}
         <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
+          {/* Mobile Pagination - Enhanced */}
+          <div className="flex-1 flex flex-col space-y-3 sm:hidden">
+            {/* Page Info */}
+            <div className="text-center">
+              <p className="text-sm text-gray-700">
+                Page <span className="font-medium">{table.getState().pagination.pageIndex + 1}</span> of{' '}
+                <span className="font-medium">{table.getPageCount()}</span>
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}-
+                {Math.min(
+                  (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                  table.getFilteredRowModel().rows.length
+                )} of {table.getFilteredRowModel().rows.length} results
+              </p>
+            </div>
+            
+            {/* Navigation Buttons */}
+            <div className="flex space-x-3">
+              <button
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="flex-1 inline-flex items-center justify-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Previous
+              </button>
+              <button
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                className="flex-1 inline-flex items-center justify-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
+              >
+                Next
+                <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Page Jump - Quick Access */}
+            {table.getPageCount() > 1 && (
+              <div className="flex items-center justify-center space-x-2">
+                <span className="text-xs text-gray-500">Go to page:</span>
+                <select
+                  value={table.getState().pagination.pageIndex}
+                  onChange={(e) => table.setPageIndex(Number(e.target.value))}
+                  className="text-xs border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  {Array.from({ length: table.getPageCount() }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
           <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
