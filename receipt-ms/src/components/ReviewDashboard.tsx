@@ -353,7 +353,7 @@ export function ReviewDashboard() {
   const categoryOptions = ['Meals', 'Travel', 'Office Supplies', 'Other'];
 
   return (
-    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div className="w-full max-w-none mx-auto py-6 sm:px-6 lg:px-8">
       <div className={`px-4 py-6 sm:px-0 transition-all duration-200 ${selectedRows.length > 0 ? 'pb-20' : ''}`}>
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Review Dashboard</h1>
@@ -819,7 +819,16 @@ export function ReviewDashboard() {
                 results
               </p>
             </div>
-            <div>
+            <div className="flex items-center space-x-4">
+              {/* Page Number Indicator */}
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-700">Page</span>
+                <span className="inline-flex items-center px-3 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-md">
+                  {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                </span>
+              </div>
+              
+              {/* Navigation Buttons */}
               <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
                 <button
                   onClick={() => table.previousPage()}
