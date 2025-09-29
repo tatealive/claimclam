@@ -475,16 +475,23 @@ export function ReviewDashboard() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {table.getRowModel().rows.map(row => (
-                  <tr 
-                    key={row.id} 
-                    className="hover:bg-gray-50 cursor-pointer"
-                    onClick={() => setSelectedReceipt(row.original)}
-                  >
-                    {row.getVisibleCells().map(cell => (
-                      <td key={cell.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
+                  <tr key={row.id} className="hover:bg-gray-50">
+                    {row.getVisibleCells().map(cell => {
+                      const isCheckboxCell = cell.column.id === 'select';
+                      const isActionsCell = cell.column.id === 'actions';
+                      
+                      return (
+                        <td 
+                          key={cell.id} 
+                          className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${
+                            !isCheckboxCell && !isActionsCell ? 'cursor-pointer' : ''
+                          }`}
+                          onClick={!isCheckboxCell && !isActionsCell ? () => setSelectedReceipt(row.original) : undefined}
+                        >
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>
@@ -505,8 +512,7 @@ export function ReviewDashboard() {
             return (
               <div 
                 key={row.id} 
-                className="bg-white shadow-sm rounded-lg border border-gray-200 p-3 cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => setSelectedReceipt(receipt)}
+                className="bg-white shadow-sm rounded-lg border border-gray-200 p-3 hover:shadow-md transition-shadow"
               >
                 {/* Card Header - Compact with Status Badge */}
                 <div className="flex items-start justify-between mb-3">
@@ -520,7 +526,10 @@ export function ReviewDashboard() {
                       }}
                       className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                     />
-                    <div>
+                    <div 
+                      className="cursor-pointer flex-1"
+                      onClick={() => setSelectedReceipt(receipt)}
+                    >
                       <h3 className="text-base font-semibold text-gray-900">{receipt.employeeName}</h3>
                       <p className="text-lg font-bold text-gray-900">${receipt.amount.toFixed(2)}</p>
                     </div>
@@ -531,7 +540,10 @@ export function ReviewDashboard() {
                 </div>
 
                 {/* Card Content - Two Column Layout */}
-                <div className="grid grid-cols-2 gap-2 mb-3 text-sm">
+                <div 
+                  className="grid grid-cols-2 gap-2 mb-3 text-sm cursor-pointer"
+                  onClick={() => setSelectedReceipt(receipt)}
+                >
                   <div>
                     <p className="text-gray-600">{receipt.vendor}</p>
                     <p className="text-gray-500 text-xs">{receipt.category}</p>
