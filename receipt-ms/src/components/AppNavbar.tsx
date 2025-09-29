@@ -20,6 +20,7 @@ import {
       <Navbar maxWidth="xl" isBordered>
         <NavbarBrand>
           <p className="font-bold text-inherit text-lg">ClaimClam 🦪</p>
+          <p className="text-gray-400 text-sm ml-3 hidden sm:block">Let's claim some clams</p>
         </NavbarBrand>
   
         <NavbarContent className="hidden sm:flex gap-6" justify="center">
