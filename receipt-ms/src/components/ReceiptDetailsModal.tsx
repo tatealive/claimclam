@@ -4,6 +4,7 @@ import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useReceipts } from '../store/receiptStore';
 import type { Receipt } from '../types';
 import FilePreview from './FilePreview';
+import { ConfirmationDialog } from './ConfirmationDialog';
 
 interface ReceiptDetailsModalProps {
   receipt: Receipt;
@@ -18,22 +19,46 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
   const { updateReceipt, addNote, deleteNote, receipts } = useReceipts();
   const [newNote, setNewNote] = useState('');
   const [isSubmittingNote, setIsSubmittingNote] = useState(false);
+  const [confirmationDialog, setConfirmationDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    variant?: 'default' | 'danger' | 'warning';
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {},
+  });
   
   // Get the current receipt state to show updated notes immediately
   const currentReceipt = receipts.find(r => r.id === receipt.id) || receipt;
 
   const handleApprove = () => {
-    if (window.confirm('Approve this receipt?')) {
-      updateReceipt(receipt.id, { status: 'Approved' });
-      onClose();
-    }
+    setConfirmationDialog({
+      isOpen: true,
+      title: 'Approve Receipt',
+      message: 'Are you sure you want to approve this receipt?',
+      onConfirm: () => {
+        updateReceipt(receipt.id, { status: 'Approved' });
+        onClose();
+      },
+      variant: 'default'
+    });
   };
 
   const handleReject = () => {
-    if (window.confirm('Reject this receipt?')) {
-      updateReceipt(receipt.id, { status: 'Rejected' });
-      onClose();
-    }
+    setConfirmationDialog({
+      isOpen: true,
+      title: 'Reject Receipt',
+      message: 'Are you sure you want to reject this receipt?',
+      onConfirm: () => {
+        updateReceipt(receipt.id, { status: 'Rejected' });
+        onClose();
+      },
+      variant: 'danger'
+    });
   };
 
   const handleAddNote = async (e: React.FormEvent) => {
@@ -50,9 +75,15 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
   };
 
   const handleDeleteNote = (noteIndex: number) => {
-    if (window.confirm('Delete this note?')) {
-      deleteNote(receipt.id, noteIndex);
-    }
+    setConfirmationDialog({
+      isOpen: true,
+      title: 'Delete Note',
+      message: 'Are you sure you want to delete this note?',
+      onConfirm: () => {
+        deleteNote(receipt.id, noteIndex);
+      },
+      variant: 'danger'
+    });
   };
 
 
@@ -82,7 +113,8 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
   };
 
   return (
-    <Transition appear show={true} as="div">
+    <>
+      <Transition appear show={true} as="div">
       <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as="div"
@@ -188,9 +220,6 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
                           <p className="text-xs text-gray-500">
                             {receipt.attachmentName.split('.').pop()?.toUpperCase()} file
                           </p>
-                          <p className="text-xs text-blue-600 mt-1">
-                            Click thumbnail to view full size
-                          </p>
                         </div>
                       </div>
                     </div>
@@ -270,6 +299,17 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
           </div>
         </div>
       </Dialog>
-    </Transition>
+      </Transition>
+      
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={confirmationDialog.isOpen}
+        onClose={() => setConfirmationDialog(prev => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmationDialog.onConfirm}
+        title={confirmationDialog.title}
+        message={confirmationDialog.message}
+        variant={confirmationDialog.variant}
+      />
+    </>
   );
 }

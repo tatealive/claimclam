@@ -14,6 +14,7 @@ import {
 import { useReceipts } from '../store/receiptStore';
 import type { Receipt } from '../types';
 import { ReceiptDetailsModal } from './ReceiptDetailsModal';
+import { ConfirmationDialog } from './ConfirmationDialog';
 import { 
   MagnifyingGlassIcon,
   FunnelIcon,
@@ -62,6 +63,18 @@ export function ReviewDashboard() {
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [confirmationDialog, setConfirmationDialog] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    variant?: 'default' | 'danger' | 'warning';
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {},
+  });
 
   // Fuse.js setup for fuzzy search
   const fuse = useMemo(() => new Fuse(receipts, {
@@ -224,19 +237,31 @@ export function ReviewDashboard() {
   const canBulkReject = selectedRows.length > 0 && selectedRows.some(row => row.original.status === 'Pending');
 
   const handleBulkApprove = () => {
-    if (window.confirm(`Approve ${selectedRows.length} selected receipt(s)?`)) {
-      const ids = selectedRows.map(row => row.original.id);
-      bulkUpdateStatus(ids, 'Approved');
-      setRowSelection({});
-    }
+    setConfirmationDialog({
+      isOpen: true,
+      title: 'Approve Receipts',
+      message: `Are you sure you want to approve ${selectedRows.length} selected receipt(s)?`,
+      onConfirm: () => {
+        const ids = selectedRows.map(row => row.original.id);
+        bulkUpdateStatus(ids, 'Approved');
+        setRowSelection({});
+      },
+      variant: 'default'
+    });
   };
 
   const handleBulkReject = () => {
-    if (window.confirm(`Reject ${selectedRows.length} selected receipt(s)?`)) {
-      const ids = selectedRows.map(row => row.original.id);
-      bulkUpdateStatus(ids, 'Rejected');
-      setRowSelection({});
-    }
+    setConfirmationDialog({
+      isOpen: true,
+      title: 'Reject Receipts',
+      message: `Are you sure you want to reject ${selectedRows.length} selected receipt(s)?`,
+      onConfirm: () => {
+        const ids = selectedRows.map(row => row.original.id);
+        bulkUpdateStatus(ids, 'Rejected');
+        setRowSelection({});
+      },
+      variant: 'danger'
+    });
   };
 
   const clearAllFilters = () => {
@@ -253,7 +278,7 @@ export function ReviewDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div className="px-4 py-6 sm:px-0">
+      <div className={`px-4 py-6 sm:px-0 transition-all duration-200 ${selectedRows.length > 0 ? 'pb-20' : ''}`}>
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Review Dashboard</h1>
           <p className="mt-1 text-sm text-gray-600">
@@ -409,32 +434,42 @@ export function ReviewDashboard() {
           </div>
         </div>
 
-        {/* Bulk Actions */}
+        {/* Floating Bulk Actions Bar */}
         {selectedRows.length > 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-blue-700">
-                {selectedRows.length} receipt(s) selected
-              </span>
-              <div className="flex space-x-2">
-                {canBulkApprove && (
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg transform transition-transform duration-300 ease-in-out">
+            <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm font-medium text-gray-900">
+                    {selectedRows.length} receipt{selectedRows.length !== 1 ? 's' : ''} selected
+                  </span>
                   <button
-                    onClick={handleBulkApprove}
-                    className="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded text-green-700 bg-green-100 hover:bg-green-200"
+                    onClick={() => setRowSelection({})}
+                    className="text-sm text-gray-500 hover:text-gray-700 underline min-h-[44px] px-2 py-1"
                   >
-                    <CheckIcon className="h-4 w-4 mr-1" />
-                    Approve Selected
+                    Clear selection
                   </button>
-                )}
-                {canBulkReject && (
-                  <button
-                    onClick={handleBulkReject}
-                    className="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded text-red-700 bg-red-100 hover:bg-red-200"
-                  >
-                    <RejectIcon className="h-4 w-4 mr-1" />
-                    Reject Selected
-                  </button>
-                )}
+                </div>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+                  {canBulkApprove && (
+                    <button
+                      onClick={handleBulkApprove}
+                      className="inline-flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 min-h-[44px]"
+                    >
+                      <CheckIcon className="h-5 w-5 mr-2" />
+                      Approve Selected
+                    </button>
+                  )}
+                  {canBulkReject && (
+                    <button
+                      onClick={handleBulkReject}
+                      className="inline-flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 min-h-[44px]"
+                    >
+                      <RejectIcon className="h-5 w-5 mr-2" />
+                      Reject Selected
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -558,27 +593,27 @@ export function ReviewDashboard() {
                   </div>
                 </div>
 
-                {/* Card Actions - Full Width Stacked */}
-                <div className="space-y-2 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
+                {/* Card Actions - Full Width Stacked with Better Touch Targets */}
+                <div className="space-y-3 pt-3 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedReceipt(receipt);
                     }}
-                    className="w-full flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[44px]"
                   >
-                    <EyeIcon className="h-4 w-4 mr-2" />
+                    <EyeIcon className="h-5 w-5 mr-2" />
                     View Details
                   </button>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         updateReceipt(receipt.id, { status: 'Approved' });
                       }}
-                      className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+                      className="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 min-h-[44px]"
                     >
-                      <CheckIcon className="h-4 w-4 mr-1" />
+                      <CheckIcon className="h-5 w-5 mr-2" />
                       Approve
                     </button>
                     <button
@@ -586,9 +621,9 @@ export function ReviewDashboard() {
                         e.stopPropagation();
                         updateReceipt(receipt.id, { status: 'Rejected' });
                       }}
-                      className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 min-h-[44px]"
                     >
-                      <RejectIcon className="h-4 w-4 mr-1" />
+                      <RejectIcon className="h-5 w-5 mr-2" />
                       Reject
                     </button>
                   </div>
@@ -664,6 +699,16 @@ export function ReviewDashboard() {
           onClose={() => setSelectedReceipt(null)}
         />
       )}
+
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={confirmationDialog.isOpen}
+        onClose={() => setConfirmationDialog(prev => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmationDialog.onConfirm}
+        title={confirmationDialog.title}
+        message={confirmationDialog.message}
+        variant={confirmationDialog.variant}
+      />
     </div>
   );
 }
