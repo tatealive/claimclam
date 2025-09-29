@@ -475,7 +475,11 @@ export function ReviewDashboard() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {table.getRowModel().rows.map(row => (
-                  <tr key={row.id} className="hover:bg-gray-50">
+                  <tr 
+                    key={row.id} 
+                    className="hover:bg-gray-50 cursor-pointer"
+                    onClick={() => setSelectedReceipt(row.original)}
+                  >
                     {row.getVisibleCells().map(cell => (
                       <td key={cell.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -499,14 +503,21 @@ export function ReviewDashboard() {
             };
             
             return (
-              <div key={row.id} className="bg-white shadow-sm rounded-lg border border-gray-200 p-3">
+              <div 
+                key={row.id} 
+                className="bg-white shadow-sm rounded-lg border border-gray-200 p-3 cursor-pointer hover:shadow-md transition-shadow"
+                onClick={() => setSelectedReceipt(receipt)}
+              >
                 {/* Card Header - Compact with Status Badge */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center space-x-2">
                     <input
                       type="checkbox"
                       checked={row.getIsSelected()}
-                      onChange={(e) => row.toggleSelected(!!e.target.checked)}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        row.toggleSelected(!!e.target.checked);
+                      }}
                       className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                     />
                     <div>
@@ -536,9 +547,12 @@ export function ReviewDashboard() {
                 </div>
 
                 {/* Card Actions - Full Width Stacked */}
-                <div className="space-y-2 pt-2 border-t border-gray-100">
+                <div className="space-y-2 pt-2 border-t border-gray-100" onClick={(e) => e.stopPropagation()}>
                   <button
-                    onClick={() => setSelectedReceipt(receipt)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedReceipt(receipt);
+                    }}
                     className="w-full flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <EyeIcon className="h-4 w-4 mr-2" />
@@ -546,14 +560,20 @@ export function ReviewDashboard() {
                   </button>
                   <div className="grid grid-cols-2 gap-2">
                     <button
-                      onClick={() => updateReceipt(receipt.id, { status: 'Approved' })}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateReceipt(receipt.id, { status: 'Approved' });
+                      }}
                       className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500"
                     >
                       <CheckIcon className="h-4 w-4 mr-1" />
                       Approve
                     </button>
                     <button
-                      onClick={() => updateReceipt(receipt.id, { status: 'Rejected' })}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        updateReceipt(receipt.id, { status: 'Rejected' });
+                      }}
                       className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
                       <RejectIcon className="h-4 w-4 mr-1" />

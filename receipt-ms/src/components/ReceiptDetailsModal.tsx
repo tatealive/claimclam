@@ -15,9 +15,12 @@ interface ReceiptDetailsModalProps {
  * Includes image preview, notes section, and approve/reject actions
  */
 export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalProps) {
-  const { updateReceipt, addNote } = useReceipts();
+  const { updateReceipt, addNote, receipts } = useReceipts();
   const [newNote, setNewNote] = useState('');
   const [isSubmittingNote, setIsSubmittingNote] = useState(false);
+  
+  // Get the current receipt state to show updated notes immediately
+  const currentReceipt = receipts.find(r => r.id === receipt.id) || receipt;
 
   const handleApprove = () => {
     if (window.confirm('Approve this receipt?')) {
@@ -98,11 +101,18 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
-                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                    Receipt Details
+                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 flex items-center space-x-3">
+                    <span>Receipt Status:</span>
+                    <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
+                      receipt.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                      receipt.status === 'Approved' ? 'bg-green-100 text-green-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {receipt.status}
+                    </span>
                   </Dialog.Title>
                   <button
                     onClick={onClose}
@@ -114,17 +124,6 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
 
                 {/* Content */}
                 <div className="space-y-6">
-                  {/* Status Badge */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-500">Status</span>
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      receipt.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                      receipt.status === 'Approved' ? 'bg-green-100 text-green-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {receipt.status}
-                    </span>
-                  </div>
 
                   {/* Receipt Information Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -169,13 +168,22 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
                     <div>
                       <span className="text-sm font-medium text-gray-500">Attachment</span>
                       <div className="mt-2 flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                        <FilePreview fileName={receipt.attachmentName} width={64} height={64} showModal={true} />
+                        <FilePreview 
+                          fileName={receipt.attachmentName} 
+                          width={80} 
+                          height={80} 
+                          showModal={true}
+                          className="cursor-pointer hover:opacity-80 transition-opacity"
+                        />
                         <div className="flex-1">
                           <p className="text-sm font-medium text-gray-900">
                             {receipt.attachmentName}
                           </p>
                           <p className="text-xs text-gray-500">
                             {receipt.attachmentName.split('.').pop()?.toUpperCase()} file
+                          </p>
+                          <p className="text-xs text-blue-600 mt-1">
+                            Click thumbnail to view full size
                           </p>
                         </div>
                       </div>
@@ -186,9 +194,9 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
                   <div>
                     <span className="text-sm font-medium text-gray-500">Notes</span>
                     <div className="mt-2 space-y-3">
-                      {receipt.notes && receipt.notes.length > 0 ? (
+                      {currentReceipt.notes && currentReceipt.notes.length > 0 ? (
                         <div className="space-y-2">
-                          {receipt.notes.map((note, index) => (
+                          {currentReceipt.notes.map((note, index) => (
                             <div key={index} className="p-3 bg-gray-50 rounded-lg">
                               <p className="text-sm text-gray-900">{note}</p>
                             </div>
