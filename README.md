@@ -175,6 +175,15 @@ Decisions specific to the receipt review and management dashboard.
 - **Client-Side Operations**: All data operations, including sorting, filtering, and pagination, are performed on the client side.
   - **Justification**: With a small mock dataset, client-side operations are instantaneous, providing a very responsive user experience. This approach would be re-evaluated for a production application with a large dataset.
 
+- **Optimized Table Layout**: The table is designed to minimize horizontal scrolling by using compact column headers and text truncation.
+  - **Justification**: Horizontal scrolling creates poor user experience on most devices. By truncating long text (like descriptions) with tooltips and using concise headers, the table fits better on standard screen sizes while maintaining functionality.
+
+- **Icon-Based Column Headers**: All table columns use Heroicons instead of text-only headers for better visual hierarchy and space efficiency.
+  - **Justification**: Icons provide immediate visual recognition, reduce header width, and create a more modern, professional appearance. The combination of icon + text ensures accessibility while saving horizontal space.
+
+- **Two-Column Modal Layout**: The receipt details modal uses a responsive two-column grid layout for receipt information.
+  - **Justification**: This reduces the modal height and creates a more compact, scannable layout. Information is logically grouped and easier to read than a single-column vertical list.
+
 ## ⑥ Folder Structure
 
 ```
