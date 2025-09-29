@@ -86,7 +86,7 @@ A modern, responsive **Receipt Management System** named **ClaimClam**, built wi
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd receipt-ms
+cd apd-receipts/receipt-ms
 
 # Install dependencies
 npm install
@@ -179,6 +179,7 @@ receipt-ms/
 ├── src/
 │   ├── components/
 │   │   ├── AppNavbar.tsx
+│   │   ├── ConfirmationDialog.tsx
 │   │   ├── FilePreview.tsx
 │   │   ├── ReceiptDetailsModal.tsx
 │   │   ├── ReceiptSubmissionForm.tsx
@@ -196,14 +197,33 @@ receipt-ms/
 │   └── style.css
 ├── tests/
 │   ├── unit/
+│   │   ├── components.test.tsx
 │   │   ├── receiptForm.test.tsx
-│   │   └── receiptSchema.test.ts
-│   └── integration/
-│       ├── form-submission.test.js
-│       ├── happy-paths.test.js
-│       └── error-cases.test.js
+│   │   ├── receiptSchema.test.ts
+│   │   └── setup.ts
+│   ├── integration/
+│   │   ├── error-cases.test.js
+│   │   ├── form-submission.test.js
+│   │   └── happy-paths.test.js
+│   ├── mcp/
+│   │   ├── automation-testing.js
+│   │   ├── debugging-testing.js
+│   │   ├── form-submission-automated.test.js
+│   │   ├── performance-testing.js
+│   │   └── run-advanced-mcp-tests.js
+│   └── run-all-tests.js
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── TESTING_WITH_CHROME_DEVTOOLS_MCP.md
 ├── public/
+│   └── vite.svg
 ├── package.json
+├── setup-mcp.sh
+├── mcp-config.json
+├── test-mcp-integration.js
+├── tsconfig.json
+├── vite.config.ts
+├── vitest.config.ts
 └── README.md
 ```
 
@@ -220,6 +240,8 @@ receipt-ms/
 - **React Testing Library**: Component testing utilities
 - **Jest DOM**: Additional matchers for DOM testing
 - **Chrome DevTools MCP**: Real browser testing and debugging
+
+**Note**: The test framework is currently basic and needs improvement. Future enhancements should include comprehensive component testing, integration tests, and automated end-to-end testing to ensure robust application reliability.
 
 ### Running Tests
 ```bash
@@ -251,14 +273,8 @@ This project includes integration with [Chrome DevTools MCP](https://developer.c
 
 See [./docs/TESTING_WITH_CHROME_DEVTOOLS_MCP.md](docs/TESTING_WITH_CHROME_DEVTOOLS_MCP.md) for detailed testing instructions.
 
-## ⑧ TODO
 
-- [ ] Implement backend API for receipt submission and retrieval
-- [ ] Add user authentication and role-based access control
-- [ ] Develop PDF export functionality for receipts
-- [ ] Set up email notifications for receipt status changes
-
-## ⑨ Future Improvements
+## ⑧ Future Improvements
 
 ### Backend Integration
 - **REST API**: Replace mock data with real backend

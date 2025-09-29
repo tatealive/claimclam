@@ -1,4 +1,4 @@
-# Receipt Management System
+# ClaimClam: A Receipt Management System
 
 ![React 18](https://img.shields.io/badge/React-18-blue)
 ![Vite](https://img.shields.io/badge/Vite-7.1-orange)
@@ -13,7 +13,7 @@
 
 ## Project Overview
 
-A modern, responsive **Receipt Management System** built with React 18 and TypeScript. This application enables employees to submit expense receipts with comprehensive validation and provides reviewers with an advanced dashboard for managing and approving submissions. The system uses mock data only, making it perfect for demonstration and testing purposes without requiring backend infrastructure.
+A modern, responsive **Receipt Management System** named **ClaimClam**, built with React 18 and TypeScript. This application enables employees to submit expense receipts with comprehensive validation and provides reviewers with an advanced dashboard for managing and approving submissions. The system uses mock data only, making it perfect for demonstration and testing purposes without requiring backend infrastructure.
 
 ## ① Live Demo
 
@@ -70,7 +70,7 @@ A modern, responsive **Receipt Management System** built with React 18 and TypeS
 | **Zod** | Schema Validation | 4.1.11 |
 | **TanStack Table** | Data Table Component | 8.21.3 |
 | **Zustand** | State Management | 5.0.8 |
-| **TanStack Router DOM** | Client-side Routing | 7.9.3 |
+| **TanStack Router DOM** | Client-side Routing | 1.132.17 |
 | **Headless UI** | Accessible UI Components | 2.2.9 |
 | **Heroicons** | Icon Library | 2.2.0 |
 | **Fuse.js** | Fuzzy Search | 7.1.0 |
@@ -86,6 +86,9 @@ A modern, responsive **Receipt Management System** built with React 18 and TypeS
 ```bash
 # Clone the repository
 git clone <repository-url>
+cd apd-receipts
+
+# Navigate to the receipt management system
 cd receipt-ms
 
 # Install dependencies
@@ -122,35 +125,55 @@ npm run preview
 
 ## ⑤ Design Decisions & Assumptions
 
-### Validation Strategy
-- **Zod + React Hook Form**: Type-safe validation with excellent developer experience
-- **Real-time validation**: Immediate feedback on form errors
-- **Client-side only**: No backend validation required for this demo
+This section outlines the key architectural choices and assumptions made during the development of the application. These decisions are guided by the goal of creating a modern, performant, and maintainable demonstration application.
 
-### File Upload Simulation
-- **1-second delay**: Simulates real upload with progress bar (0-100%)
-- **File kept in memory**: No actual file processing or storage
-- **Supported formats**: JPG, PNG, PDF with 10MB size limit
+### Application-Wide Decisions
 
-### Pagination Strategy
-- **Fixed 10 rows per page**: Simple UX, easily configurable
-- **Client-side pagination**: All data loaded, filtered in memory
-- **Responsive pagination**: Different layouts for mobile/desktop
+These decisions affect the overall architecture and behavior of the application.
 
-### Responsive Design
-- **Mobile-first**: Table collapses to card view below 640px breakpoint
-- **Tailwind breakpoints**: sm (640px), md (1024px), lg (1280px)
-- **Touch-friendly**: Larger touch targets on mobile devices
+- **Client-Side Only & Mock Data**: The application is designed to run entirely in the browser without a backend.
+  - **Justification**: This simplifies the project setup, making it easy to run and test without requiring a database or server. All data is sourced from `src/data/mockReceipts.ts` and managed in the client's state.
 
-### State Management
-- **Zustand + localStorage**: Simple state management with persistence
-- **No backend**: All data stored locally, resets on browser clear
-- **Optimistic updates**: UI updates immediately for better UX
+- **State Management with Zustand & localStorage**: Zustand is used for centralized state management, with the `persist` middleware to save the entire state to the browser's `localStorage`.
+  - **Justification**: Zustand provides a simple and scalable state management solution without the boilerplate of other libraries. Persisting to `localStorage` ensures that user-submitted receipts and changes are not lost on page refresh, creating a more seamless demo experience.
 
-### Data Strategy
-- **Mock data only**: 15 sample receipts with varied statuses and categories
-- **No API calls**: All operations are synchronous and local
-- **Realistic data**: Includes proper date formatting and currency display
+- **Responsive & Mobile-First Design**: The application is built with a mobile-first approach using Tailwind CSS.
+  - **Justification**: This ensures a high-quality user experience on a wide range of devices, from small mobile screens to large desktops. Standard Tailwind breakpoints are used for consistency.
+
+### Submission Form (`/submit`)
+
+Decisions specific to the receipt submission page.
+
+- **Type-Safe Forms with React Hook Form & Zod**: Forms are managed by React Hook Form, and validation is handled using Zod schemas defined in `src/schemas/receiptSchema.ts`.
+  - **Justification**: This combination provides a powerful, type-safe, and declarative way to manage form state and validation. It leads to more maintainable code and a better developer experience.
+
+- **Real-time Validation & User Feedback**: Form fields are validated in real-time (`onChange`), providing immediate feedback to the user.
+  - **Justification**: This improves the user experience by helping users correct errors as they happen, rather than after submitting the form. On submission errors, the first invalid field is automatically focused.
+
+- **Simulated File Upload**: The file upload process is simulated with a 2-second delay and a progress indicator.
+  - **Justification**: This mimics the behavior of a real-world file upload, providing a more realistic demonstration. The file itself is stored in memory and not sent to a server.
+
+- **UX Enhancements with Toasts & Success States**: The application uses toast notifications for non-intrusive feedback (e.g., "uploading", "success", "error"). A clear success overlay is shown after a successful submission.
+  - **Justification**: These features provide clear and immediate feedback on the status of user actions, improving usability and user confidence.
+
+- **Required File Attachment**: The receipt file attachment is a mandatory field for form submission.
+  - **Justification**: This ensures that every receipt submission is accompanied by its corresponding proof. This is a deliberate design choice for the current version, though it could be made optional in future iterations depending on business requirements.
+
+### Review Dashboard (`/dashboard`)
+
+Decisions specific to the receipt review and management dashboard.
+
+- **Data Table with TanStack Table**: The dashboard uses TanStack Table to manage and display the receipt data.
+  - **Justification**: TanStack Table is a headless, lightweight, and powerful utility for building complex data grids. It provides essential features like sorting, filtering, and pagination out-of-the-box.
+
+- **Advanced Filtering & Fuzzy Search**: The dashboard includes multi-faceted filtering (by status, category, date range) and a global fuzzy search powered by Fuse.js.
+  - **Justification**: These features allow reviewers to quickly and efficiently find specific receipts. Fuzzy search provides a more forgiving and user-friendly search experience compared to exact matching.
+
+- **Efficient Review Workflow**: The dashboard is designed for efficient reviewing with features like bulk actions (approve/reject multiple receipts), inline actions on each row, and a detailed modal view.
+  - **Justification**: This minimizes the number of clicks and page navigations required for a reviewer to perform their tasks, improving productivity.
+
+- **Client-Side Operations**: All data operations, including sorting, filtering, and pagination, are performed on the client side.
+  - **Justification**: With a small mock dataset, client-side operations are instantaneous, providing a very responsive user experience. This approach would be re-evaluated for a production application with a large dataset.
 
 ## ⑥ Folder Structure
 
@@ -158,6 +181,9 @@ npm run preview
 receipt-ms/
 ├── src/
 │   ├── components/
+│   │   ├── AppNavbar.tsx
+│   │   ├── ConfirmationDialog.tsx
+│   │   ├── FilePreview.tsx
 │   │   ├── ReceiptDetailsModal.tsx
 │   │   ├── ReceiptSubmissionForm.tsx
 │   │   └── ReviewDashboard.tsx
@@ -169,17 +195,38 @@ receipt-ms/
 │   │   └── receiptStore.ts
 │   ├── types/
 │   │   └── index.ts
-│   ├── App.tsx
 │   ├── main.tsx
+│   ├── router.tsx
 │   └── style.css
 ├── tests/
 │   ├── unit/
-│   │   └── receiptSchema.test.ts
-│   └── integration/
-│       ├── happy-paths.test.js
-│       └── error-cases.test.js
+│   │   ├── components.test.tsx
+│   │   ├── receiptForm.test.tsx
+│   │   ├── receiptSchema.test.ts
+│   │   └── setup.ts
+│   ├── integration/
+│   │   ├── error-cases.test.js
+│   │   ├── form-submission.test.js
+│   │   └── happy-paths.test.js
+│   ├── mcp/
+│   │   ├── automation-testing.js
+│   │   ├── debugging-testing.js
+│   │   ├── form-submission-automated.test.js
+│   │   ├── performance-testing.js
+│   │   └── run-advanced-mcp-tests.js
+│   └── run-all-tests.js
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── TESTING_WITH_CHROME_DEVTOOLS_MCP.md
 ├── public/
+│   └── vite.svg
 ├── package.json
+├── setup-mcp.sh
+├── mcp-config.json
+├── test-mcp-integration.js
+├── tsconfig.json
+├── vite.config.ts
+├── vitest.config.ts
 └── README.md
 ```
 
@@ -196,6 +243,8 @@ receipt-ms/
 - **React Testing Library**: Component testing utilities
 - **Jest DOM**: Additional matchers for DOM testing
 - **Chrome DevTools MCP**: Real browser testing and debugging
+
+**Note**: The test framework is currently basic and needs improvement. Future enhancements should include comprehensive component testing, integration tests, and automated end-to-end testing to ensure robust application reliability.
 
 ### Running Tests
 ```bash
@@ -227,12 +276,7 @@ This project includes integration with [Chrome DevTools MCP](https://developer.c
 
 See [./docs/TESTING_WITH_CHROME_DEVTOOLS_MCP.md](docs/TESTING_WITH_CHROME_DEVTOOLS_MCP.md) for detailed testing instructions.
 
-## ⑧ TODO
-
-- [ ] Item 1
-- [ ] Item 2
-
-## ⑨ Future Improvements
+## ⑧ Future Improvements
 
 ### Backend Integration
 - **REST API**: Replace mock data with real backend
