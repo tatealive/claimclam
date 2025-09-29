@@ -29,7 +29,10 @@ import {
   TagIcon,
   ClipboardDocumentListIcon,
   BriefcaseIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+  ChevronUpDownIcon
 } from '@heroicons/react/24/outline';
 import Fuse from 'fuse.js';
 
