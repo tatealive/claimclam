@@ -68,6 +68,19 @@ export const useReceipts = create<ReceiptStore>()(
               : receipt
           )
         }));
+      },
+      
+      deleteNote: (id, noteIndex) => {
+        set((state) => ({
+          receipts: state.receipts.map(receipt =>
+            receipt.id === id 
+              ? { 
+                  ...receipt, 
+                  notes: receipt.notes?.filter((_, index) => index !== noteIndex) || []
+                }
+              : receipt
+          )
+        }));
       }
     }),
     {

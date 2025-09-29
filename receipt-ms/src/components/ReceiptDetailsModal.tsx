@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useReceipts } from '../store/receiptStore';
 import type { Receipt } from '../types';
 import FilePreview from './FilePreview';
@@ -15,7 +15,7 @@ interface ReceiptDetailsModalProps {
  * Includes image preview, notes section, and approve/reject actions
  */
 export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalProps) {
-  const { updateReceipt, addNote, receipts } = useReceipts();
+  const { updateReceipt, addNote, deleteNote, receipts } = useReceipts();
   const [newNote, setNewNote] = useState('');
   const [isSubmittingNote, setIsSubmittingNote] = useState(false);
   
@@ -46,6 +46,12 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
       setNewNote('');
     } finally {
       setIsSubmittingNote(false);
+    }
+  };
+
+  const handleDeleteNote = (noteIndex: number) => {
+    if (window.confirm('Delete this note?')) {
+      deleteNote(receipt.id, noteIndex);
     }
   };
 
@@ -197,8 +203,15 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
                       {currentReceipt.notes && currentReceipt.notes.length > 0 ? (
                         <div className="space-y-2">
                           {currentReceipt.notes.map((note, index) => (
-                            <div key={index} className="p-3 bg-gray-50 rounded-lg">
-                              <p className="text-sm text-gray-900">{note}</p>
+                            <div key={index} className="p-3 bg-gray-50 rounded-lg flex items-start justify-between group">
+                              <p className="text-sm text-gray-900 flex-1 pr-2">{note}</p>
+                              <button
+                                onClick={() => handleDeleteNote(index)}
+                                className="opacity-0 group-hover:opacity-100 transition-opacity p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded"
+                                title="Delete note"
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
                             </div>
                           ))}
                         </div>

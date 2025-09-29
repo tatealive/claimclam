@@ -31,4 +31,5 @@ export interface ReceiptStore {
   deleteReceipt: (id: number) => void;
   bulkUpdateStatus: (ids: number[], status: Receipt['status']) => void;
   addNote: (id: number, note: string) => void;
+  deleteNote: (id: number, noteIndex: number) => void;
 }
