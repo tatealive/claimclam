@@ -1,37 +1,14 @@
 import { z } from 'zod';
 
-/**
- * Zod schema for receipt form validation
- * 
- * Defines validation rules for all receipt form fields including
- * amount, date, vendor, category, description, employee info, and file upload.
- * 
- * @example
- * ```tsx
- * const result = receiptSchema.safeParse(formData);
- * if (result.success) {
- *   // Process valid data
- * } else {
- *   // Handle validation errors
- * }
- * ```
- * 
- * @features
- * - Amount validation (min $0.01, max $999,999.99)
- * - Date validation (no future dates)
- * - String length validation for all text fields
- * - File type and size validation
- * - Type-safe form data inference
- */
 export const receiptSchema = z.object({
   amount: z
-    .number({ message: 'Amount is required' })
+    .number({ message: 'Please enter an amount' })
     .min(0.01, 'Amount must be at least $0.01')
     .max(999999.99, 'Amount cannot exceed $999,999.99'),
   
   date: z
-    .string({ message: 'Date is required' })
-    .min(1, 'Date is required')
+    .string({ message: 'Please choose a purchase date' })
+    .min(1, 'Please choose a purchase date')
     .refine((date) => {
       const selectedDate = new Date(date);
       const today = new Date();
@@ -40,13 +17,13 @@ export const receiptSchema = z.object({
     }, 'Date cannot be in the future'),
   
   vendor: z
-    .string({ message: 'Vendor is required' })
-    .min(1, 'Vendor is required')
+    .string({ message: 'Please enter a vendor name' })
+    .min(1, 'Please enter a vendor name')
     .max(100, 'Vendor name cannot exceed 100 characters'),
   
   category: z
-    .string({ message: 'Category is required' })
-    .min(1, 'Category is required'),
+    .string({ message: 'Please select an expense category' })
+    .min(1, 'Please select an expense category'),
   
   description: z
     .string()
@@ -54,27 +31,21 @@ export const receiptSchema = z.object({
     .optional(),
   
   employeeName: z
-    .string({ message: 'Employee name is required' })
-    .min(1, 'Employee name is required')
-    .max(100, 'Employee name cannot exceed 100 characters'),
+    .string({ message: 'Please enter your full name' })
+    .min(1, 'Please enter your full name')
+    .max(100, 'Name cannot exceed 100 characters'),
   
   department: z
-    .string({ message: 'Department is required' })
-    .min(1, 'Department is required'),
+    .string({ message: 'Please select a department' })
+    .min(1, 'Please select a department'),
   
   attachment: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => {
-      if (!file) return true;
-      const maxSize = 10 * 1024 * 1024; // 10MB
-      return file.size <= maxSize;
-    }, 'File size cannot exceed 10MB')
-    .refine((file) => {
-      if (!file) return true;
-      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-      return allowedTypes.includes(file.type);
-    }, 'Only JPG, PNG, and PDF files are allowed')
+    .instanceof(File, { message: 'Please upload a receipt file' })
+    .refine(file => file.size <= 10 * 1024 * 1024, 'File size cannot exceed 10MB')
+    .refine(
+      file => ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type),
+      'Only JPG, PNG, and PDF files are allowed'
+    ),
 });
 
 export type ReceiptFormData = z.infer<typeof receiptSchema>;

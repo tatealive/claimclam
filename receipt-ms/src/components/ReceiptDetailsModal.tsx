@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon, DocumentIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useReceipts } from '../store/receiptStore';
 import type { Receipt } from '../types';
+import FilePreview from './FilePreview';
 
 interface ReceiptDetailsModalProps {
   receipt: Receipt;
@@ -45,15 +46,6 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
     }
   };
 
-  const getFileIcon = (fileName?: string) => {
-    if (!fileName) return <DocumentIcon className="h-8 w-8 text-gray-400" />;
-    
-    const extension = fileName.split('.').pop()?.toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(extension || '')) {
-      return <PhotoIcon className="h-8 w-8 text-blue-400" />;
-    }
-    return <DocumentIcon className="h-8 w-8 text-gray-400" />;
-  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -177,7 +169,7 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
                     <div>
                       <span className="text-sm font-medium text-gray-500">Attachment</span>
                       <div className="mt-2 flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                        {getFileIcon(receipt.attachmentName)}
+                        <FilePreview fileName={receipt.attachmentName} width={64} height={64} />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
                             {receipt.attachmentName}

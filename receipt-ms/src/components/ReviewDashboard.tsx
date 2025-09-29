@@ -303,7 +303,7 @@ export function ReviewDashboard() {
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Status Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Status</label>
                   <div className="space-y-1">
                     {statusOptions.map((status) => (
                       <label key={status} className="flex items-center">
@@ -319,7 +319,7 @@ export function ReviewDashboard() {
                           }}
                           className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{status}</span>
+                        <span className="ml-2 text-sm font-semibold text-gray-700">{status}</span>
                       </label>
                     ))}
                   </div>
@@ -327,7 +327,7 @@ export function ReviewDashboard() {
 
                 {/* Category Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
                   <div className="space-y-1">
                     {categoryOptions.map((category) => (
                       <label key={category} className="flex items-center">
@@ -343,7 +343,7 @@ export function ReviewDashboard() {
                           }}
                           className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                         />
-                        <span className="ml-2 text-sm text-gray-700">{category}</span>
+                        <span className="ml-2 text-sm font-semibold text-gray-700">{category}</span>
                       </label>
                     ))}
                   </div>
@@ -351,7 +351,7 @@ export function ReviewDashboard() {
 
                 {/* Date From */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Date From</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Date From</label>
                   <input
                     type="date"
                     value={dateFrom}
@@ -362,7 +362,7 @@ export function ReviewDashboard() {
 
                 {/* Date To */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Date To</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Date To</label>
                   <input
                     type="date"
                     value={dateTo}

@@ -1,8 +1,7 @@
-/* Tailwind v4 + HeroUI core layers */
-@import "tailwindcss/preflight";
-@import "tailwindcss/theme";
-@import "tailwindcss/utilities";
-
+@import "tailwindcss";
+@plugin './hero.ts';
+@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+@custom-variant dark (&:is(.dark *));
 /* Opinionated but safe defaults */
 @layer base {
   html {
@@ -22,3 +21,5 @@
     min-height: 100dvh;
   }
 }
+
+
