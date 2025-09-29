@@ -17,7 +17,7 @@ A modern, responsive **Receipt Management System** named **ClaimClam**, built wi
 
 ## ① Live Demo
 
-**Demo URL:** `https://your-deployment-url.vercel.app`
+**Demo URL:** `https://your-deployment-url.com`
 
 *Note: Replace with actual deployment URL when available*
 

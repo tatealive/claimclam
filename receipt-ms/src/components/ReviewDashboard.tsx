@@ -21,7 +21,15 @@ import {
   XMarkIcon,
   CheckIcon,
   XMarkIcon as RejectIcon,
-  EyeIcon
+  EyeIcon,
+  CalendarDaysIcon,
+  UserIcon,
+  CurrencyDollarIcon,
+  BuildingStorefrontIcon,
+  TagIcon,
+  ClipboardDocumentListIcon,
+  BriefcaseIcon,
+  Cog6ToothIcon
 } from '@heroicons/react/24/outline';
 import Fuse from 'fuse.js';
 
@@ -137,29 +145,77 @@ export function ReviewDashboard() {
         enableHiding: false,
       }),
       columnHelper.accessor('submittedDate', {
-        header: 'Date Submitted',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <CalendarDaysIcon className="h-4 w-4" />
+            <span>Date Submitted</span>
+          </div>
+        ),
         cell: (info) => new Date(info.getValue()).toLocaleDateString(),
         sortingFn: 'datetime',
       }),
       columnHelper.accessor('employeeName', {
-        header: 'Employee',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <UserIcon className="h-4 w-4" />
+            <span>Employee</span>
+          </div>
+        ),
+        cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor('department', {
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <BriefcaseIcon className="h-4 w-4" />
+            <span>Department</span>
+          </div>
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('amount', {
-        header: 'Amount',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <CurrencyDollarIcon className="h-4 w-4" />
+            <span>Amount</span>
+          </div>
+        ),
         cell: (info) => `$${info.getValue().toFixed(2)}`,
         sortingFn: 'basic',
       }),
       columnHelper.accessor('vendor', {
-        header: 'Vendor',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <BuildingStorefrontIcon className="h-4 w-4" />
+            <span>Vendor</span>
+          </div>
+        ),
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor('category', {
-        header: 'Category',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <TagIcon className="h-4 w-4" />
+            <span>Category</span>
+          </div>
+        ),
         cell: (info) => info.getValue(),
       }),
+      columnHelper.accessor('description', {
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <ClipboardDocumentListIcon className="h-4 w-4" />
+            <span>Description</span>
+          </div>
+        ),
+        cell: (info) => info.getValue() || '-',
+      }),
       columnHelper.accessor('status', {
-        header: 'Status',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <Cog6ToothIcon className="h-4 w-4" />
+            <span>Status</span>
+          </div>
+        ),
         cell: (info) => {
           const status = info.getValue();
           const statusColors = {
@@ -176,7 +232,12 @@ export function ReviewDashboard() {
       }),
       columnHelper.display({
         id: 'actions',
-        header: 'Actions',
+        header: () => (
+          <div className="flex items-center space-x-1">
+            <Cog6ToothIcon className="h-4 w-4" />
+            <span>Actions</span>
+          </div>
+        ),
         cell: ({ row }) => (
           <div className="flex space-x-2">
             <button
@@ -501,10 +562,13 @@ export function ReviewDashboard() {
                           </span>
                           {header.column.getCanSort() && (
                             <span className="text-gray-400">
-                              {{
-                                asc: '↑',
-                                desc: '↓',
-                              }[header.column.getIsSorted() as string] ?? '↕'}
+                              {header.column.getIsSorted() === 'asc' ? (
+                                <ChevronUpIcon className="h-4 w-4" />
+                              ) : header.column.getIsSorted() === 'desc' ? (
+                                <ChevronDownIcon className="h-4 w-4" />
+                              ) : (
+                                <ChevronUpDownIcon className="h-4 w-4" />
+                              )}
                             </span>
                           )}
                         </div>
