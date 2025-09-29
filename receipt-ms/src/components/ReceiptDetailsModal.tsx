@@ -114,7 +114,7 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
 
   return (
     <>
-      <Transition appear show={true} as="div">
+      <Transition appear show={!!receipt} as="div">
       <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as="div"
@@ -125,7 +125,7 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-50" />
+          <div className="fixed inset-0 bg-black/50" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
