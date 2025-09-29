@@ -406,8 +406,8 @@ export function ReviewDashboard() {
           </div>
         )}
 
-        {/* Table */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        {/* Desktop Table View */}
+        <div className="hidden sm:block bg-white shadow rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -452,62 +452,147 @@ export function ReviewDashboard() {
               </tbody>
             </table>
           </div>
+        </div>
 
-          {/* Pagination */}
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-            <div className="flex-1 flex justify-between sm:hidden">
-              <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Previous
-              </button>
-              <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Next
-              </button>
+        {/* Mobile Card View */}
+        <div className="sm:hidden space-y-4">
+          {table.getRowModel().rows.map(row => {
+            const receipt = row.original;
+            const statusColors = {
+              Pending: 'bg-yellow-100 text-yellow-800',
+              Approved: 'bg-green-100 text-green-800',
+              Rejected: 'bg-red-100 text-red-800',
+            };
+            
+            return (
+              <div key={row.id} className="bg-white shadow rounded-lg border border-gray-200 p-4">
+                {/* Card Header with Selection and Status */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      checked={row.getIsSelected()}
+                      onChange={(e) => row.toggleSelected(!!e.target.checked)}
+                      className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    />
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[receipt.status]}`}>
+                      {receipt.status}
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {new Date(receipt.submittedDate).toLocaleDateString()}
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-500">Employee</span>
+                    <span className="text-sm text-gray-900">{receipt.employeeName}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-500">Amount</span>
+                    <span className="text-sm font-semibold text-gray-900">${receipt.amount.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-500">Vendor</span>
+                    <span className="text-sm text-gray-900">{receipt.vendor}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-500">Category</span>
+                    <span className="text-sm text-gray-900">{receipt.category}</span>
+                  </div>
+                  {receipt.description && (
+                    <div className="pt-2 border-t border-gray-100">
+                      <span className="text-sm font-medium text-gray-500">Description</span>
+                      <p className="text-sm text-gray-900 mt-1">{receipt.description}</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Actions */}
+                <div className="flex justify-end space-x-2 pt-3 border-t border-gray-100">
+                  <button
+                    onClick={() => setSelectedReceipt(receipt)}
+                    className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <EyeIcon className="h-3 w-3 mr-1" />
+                    View
+                  </button>
+                  <button
+                    onClick={() => updateReceipt(receipt.id, { status: 'Approved' })}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    <CheckIcon className="h-3 w-3 mr-1" />
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => updateReceipt(receipt.id, { status: 'Rejected' })}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    <RejectIcon className="h-3 w-3 mr-1" />
+                    Reject
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Pagination */}
+        <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+          <div className="flex-1 flex justify-between sm:hidden">
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm text-gray-700">
+                Showing{' '}
+                <span className="font-medium">
+                  {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
+                </span>{' '}
+                to{' '}
+                <span className="font-medium">
+                  {Math.min(
+                    (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                    table.getFilteredRowModel().rows.length
+                  )}
+                </span>{' '}
+                of{' '}
+                <span className="font-medium">{table.getFilteredRowModel().rows.length}</span>{' '}
+                results
+              </p>
             </div>
-            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm text-gray-700">
-                  Showing{' '}
-                  <span className="font-medium">
-                    {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
-                  </span>{' '}
-                  to{' '}
-                  <span className="font-medium">
-                    {Math.min(
-                      (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                      table.getFilteredRowModel().rows.length
-                    )}
-                  </span>{' '}
-                  of{' '}
-                  <span className="font-medium">{table.getFilteredRowModel().rows.length}</span>{' '}
-                  results
-                </p>
-              </div>
-              <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                  <button
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
-                </nav>
-              </div>
+            <div>
+              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                <button
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                  className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+              </nav>
             </div>
           </div>
         </div>
