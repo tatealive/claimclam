@@ -15,13 +15,7 @@
 
 A modern, responsive **Receipt Management System** named **ClaimClam**, built with React 18 and TypeScript. This application enables employees to submit expense receipts with comprehensive validation and provides reviewers with an advanced dashboard for managing and approving submissions. The system uses mock data only, making it perfect for demonstration and testing purposes without requiring backend infrastructure.
 
-## ① Live Demo
-
-**Demo URL:** `https://your-deployment-url.com`
-
-*Note: Replace with actual deployment URL when available*
-
-## ② Features Implemented
+## ① Features Implemented
 
 - **Receipt Submission Form**
   - Real-time validation with Zod schema
@@ -58,7 +52,7 @@ A modern, responsive **Receipt Management System** named **ClaimClam**, built wi
   - React Testing Library integration
   - Comprehensive form validation tests
 
-## ③ Tech Stack
+## ② Tech Stack
 
 | Library | Purpose | Version |
 |---------|---------|---------|
@@ -76,7 +70,7 @@ A modern, responsive **Receipt Management System** named **ClaimClam**, built wi
 | **Fuse.js** | Fuzzy Search | 7.1.0 |
 | **Vitest** | Test Runner | 3.2.4 |
 
-## ④ Setup & Scripts
+## ③ Setup & Scripts
 
 ### Prerequisites
 - Node.js 18+ 
@@ -85,8 +79,8 @@ A modern, responsive **Receipt Management System** named **ClaimClam**, built wi
 ### Installation
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd apd-receipts
+git clone https://github.com/tatealive/claimclam.git
+cd claimclam
 
 # Navigate to the receipt management system
 cd receipt-ms
@@ -123,7 +117,7 @@ npm run preview
 - `npm run mcp:install` - Install Chrome DevTools MCP server
 - `npm run mcp:start` - Start the MCP server
 
-## ⑤ Design Decisions & Assumptions
+## ④ Design Decisions & Assumptions
 
 This section outlines the key architectural choices and assumptions made during the development of the application. These decisions are guided by the goal of creating a modern, performant, and maintainable demonstration application.
 
@@ -184,7 +178,7 @@ Decisions specific to the receipt review and management dashboard.
 - **Two-Column Modal Layout**: The receipt details modal uses a responsive two-column grid layout for receipt information.
   - **Justification**: This reduces the modal height and creates a more compact, scannable layout. Information is logically grouped and easier to read than a single-column vertical list.
 
-## ⑥ Folder Structure
+## ⑤ Folder Structure
 
 ```
 receipt-ms/
@@ -239,7 +233,7 @@ receipt-ms/
 └── README.md
 ```
 
-## ⑦ Testing Strategy
+## ⑥ Testing Strategy
 
 ### Test Coverage
 - **Form Validation**: Comprehensive Zod schema testing
@@ -285,7 +279,7 @@ This project includes integration with [Chrome DevTools MCP](https://developer.c
 
 See [./docs/TESTING_WITH_CHROME_DEVTOOLS_MCP.md](docs/TESTING_WITH_CHROME_DEVTOOLS_MCP.md) for detailed testing instructions.
 
-## ⑧ Future Improvements
+## ⑦ Future Improvements
 
 ### Backend Integration
 - **REST API**: Replace mock data with real backend
