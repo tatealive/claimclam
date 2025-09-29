@@ -169,8 +169,8 @@ export function ReceiptDetailsModal({ receipt, onClose }: ReceiptDetailsModalPro
                     <div>
                       <span className="text-sm font-medium text-gray-500">Attachment</span>
                       <div className="mt-2 flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                        <FilePreview fileName={receipt.attachmentName} width={64} height={64} />
-                        <div>
+                        <FilePreview fileName={receipt.attachmentName} width={64} height={64} showModal={true} />
+                        <div className="flex-1">
                           <p className="text-sm font-medium text-gray-900">
                             {receipt.attachmentName}
                           </p>

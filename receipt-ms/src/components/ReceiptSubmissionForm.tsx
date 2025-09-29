@@ -260,7 +260,7 @@ const simulateFormSubmit = (): Promise<void> => {
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
-                        <FilePreview file={selectedFile as File} fileName={selectedFile.name} width={64} height={64} />
+                        <FilePreview file={selectedFile as File} fileName={selectedFile.name} width={64} height={64} showModal={true} />
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center space-x-2">
                             <p className="text-sm font-medium text-blue-800 truncate">{selectedFile.name}</p>

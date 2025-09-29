@@ -12,7 +12,8 @@ export const mockReceipts: Receipt[] = [
     department: "Sales",
     status: "Pending",
     submittedDate: "2024-01-16T10:30:00Z",
-    attachmentName: "starbucks_receipt.jpg"
+    attachmentName: "starbucks_receipt.jpg",
+    notes: []
   },
   {
     id: 2,
@@ -25,7 +26,8 @@ export const mockReceipts: Receipt[] = [
     department: "Engineering",
     status: "Approved",
     submittedDate: "2024-01-11T14:45:00Z",
-    attachmentName: "boarding_pass.pdf"
+    attachmentName: "boarding_pass.pdf",
+    notes: []
   },
   {
     id: 3,
@@ -194,9 +196,17 @@ export const mockReceipts: Receipt[] = [
     department: "Sales",
     status: "Pending",
     submittedDate: "2024-01-02T09:30:00Z",
-    attachmentName: "staples_receipt.pdf"
+    attachmentName: "staples_receipt.pdf",
+    notes: []
   }
 ];
+
+// Add notes property to all receipts if not present
+mockReceipts.forEach(receipt => {
+  if (!receipt.notes) {
+    receipt.notes = [];
+  }
+});
 
 export const departments = ["Engineering", "Sales", "Marketing", "Finance", "HR"] as const;
 export const categories = ["Meals", "Travel", "Office Supplies", "Other"] as const;
