@@ -554,16 +554,31 @@ export function ReviewDashboard() {
         {/* Desktop Table View */}
         <div className="hidden sm:block bg-white shadow rounded-lg overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 table-fixed">
               <thead className="bg-gray-50">
                 {table.getHeaderGroups().map(headerGroup => (
                   <tr key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                      <th
-                        key={header.id}
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
+                    {headerGroup.headers.map((header, index) => {
+                      // Define column widths for consistent layout
+                      const columnWidths = [
+                        'w-12',    // Select checkbox
+                        'w-24',    // Date
+                        'w-32',    // Employee
+                        'w-28',    // Department
+                        'w-20',    // Amount
+                        'w-32',    // Vendor
+                        'w-28',    // Category
+                        'w-48',    // Description
+                        'w-24',    // Status
+                        'w-28',    // Actions
+                      ];
+                      
+                      return (
+                        <th
+                          key={header.id}
+                          className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 ${columnWidths[index] || ''}`}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
                         <div className="flex items-center space-x-1">
                           <span>
                             {header.isPlaceholder
@@ -582,22 +597,37 @@ export function ReviewDashboard() {
                             </span>
                           )}
                         </div>
-                      </th>
-                    ))}
+                        </th>
+                      );
+                    })}
                   </tr>
                 ))}
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {table.getRowModel().rows.map(row => (
                   <tr key={row.id} className="hover:bg-gray-50">
-                    {row.getVisibleCells().map(cell => {
+                    {row.getVisibleCells().map((cell, index) => {
                       const isCheckboxCell = cell.column.id === 'select';
                       const isActionsCell = cell.column.id === 'actions';
+                      
+                      // Define column widths for consistent layout (same as headers)
+                      const columnWidths = [
+                        'w-12',    // Select checkbox
+                        'w-24',    // Date
+                        'w-32',    // Employee
+                        'w-28',    // Department
+                        'w-20',    // Amount
+                        'w-32',    // Vendor
+                        'w-28',    // Category
+                        'w-48',    // Description
+                        'w-24',    // Status
+                        'w-28',    // Actions
+                      ];
                       
                       return (
                         <td 
                           key={cell.id} 
-                          className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${
+                          className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${columnWidths[index] || ''} ${
                             !isCheckboxCell && !isActionsCell ? 'cursor-pointer' : ''
                           }`}
                           onClick={!isCheckboxCell && !isActionsCell ? () => setSelectedReceipt(row.original) : undefined}
@@ -823,7 +853,7 @@ export function ReviewDashboard() {
               {/* Page Number Indicator */}
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-700">Page</span>
-                <span className="inline-flex items-center px-3 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-md">
+                <span className="inline-flex items-center px-3 py-1 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-md min-w-[80px] justify-center">
                   {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
                 </span>
               </div>
