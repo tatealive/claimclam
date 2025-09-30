@@ -41,6 +41,7 @@ A modern, responsive **Receipt Management System** named **ClaimClam**, built wi
   - Mobile-first approach
   - Table transforms to card view on screens < 640px
   - Touch-friendly interface elements
+  - Responsive navigation with icons for mobile
 
 - **State Management**
   - Zustand store with localStorage persistence
