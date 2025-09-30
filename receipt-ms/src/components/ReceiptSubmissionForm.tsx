@@ -20,6 +20,7 @@
   import { useReceipts } from "../store/receiptStore";
   import FilePreview from "./FilePreview";
   import { departments, categories } from "../data/mockReceipts";
+  import { logError } from "../utils/errorLogger";
 
   export function ReceiptSubmissionForm() {
     const router = useRouter();
@@ -77,11 +78,25 @@
         simulateFileUpload()
           .then(() => {
             setIsUploaded(true);
+            addToast({
+              title: "Upload complete",
+              description: "Your file has been uploaded.",
+              color: "success",
+              timeout: 3000,
+            });
           })
           .catch((err) => {
-            console.error("File upload failed:", err);
+            logError("File upload failed", err);
             setValue("attachment", null as any, { shouldValidate: true });
             setIsUploaded(false);
+            if (err.message !== "Upload cancelled") {
+              addToast({
+                title: "Upload failed",
+                description: "There was an error uploading your file.",
+                color: "danger",
+                timeout: 3000,
+              });
+            }
           });
       }
     };
@@ -128,24 +143,6 @@
         color: "primary",
         timeout: 2000, // this way it disappears on its own
       });
-    
-      uploadPromise
-        .then(() => {
-          addToast({
-            title: "Upload complete",
-            description: "Your file has been uploaded.",
-            color: "success",
-            timeout: 3000,
-          });
-        })
-        .catch(() => {
-          addToast({
-            title: "Upload failed",
-            description: "There was an error uploading your file.",
-            color: "danger",
-            timeout: 3000,
-          });
-        });
     
       return uploadPromise;
     };
@@ -211,7 +208,7 @@ const simulateFormSubmit = (): Promise<void> => {
         }, 1000); // Wait for fade animation to complete
 
       } catch (error) {
-        console.error("Error submitting receipt:", error);
+        logError("Error submitting receipt", error);
         addToast({
           title: "Error",
           description: "There was a problem submitting your receipt.",

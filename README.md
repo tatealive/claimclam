@@ -147,6 +147,9 @@ Decisions specific to the receipt submission page.
 - **Simulated File Upload**: The file upload process is simulated with a 2-second delay and a progress indicator.
   - **Justification**: This mimics the behavior of a real-world file upload, providing a more realistic demonstration. The file itself is stored in memory and not sent to a server.
 
+- **Robust Error Handling**: The form provides clear, non-destructive feedback for both validation and submission errors.
+  - **Justification**: If a submission fails, the form state is preserved, so the user doesn't lose their input. Specific error messages are shown for file upload issues and general submission problems using toast notifications, ensuring the user is always informed.
+
 - **UX Enhancements with Toasts & Success States**: The application uses toast notifications for non-intrusive feedback (e.g., "uploading", "success", "error"). A clear success overlay is shown after a successful submission.
   - **Justification**: These features provide clear and immediate feedback on the status of user actions, improving usability and user confidence.
 
