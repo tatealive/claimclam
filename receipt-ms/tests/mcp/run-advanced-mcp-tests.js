@@ -22,7 +22,7 @@ import { runAllPerformanceTests } from './performance-testing.js';
 import { runAllAutomationTests } from './automation-testing.js';
 import { runAllDebuggingTests } from './debugging-testing.js';
 
-const BASE_URL = 'http://localhost:5174';
+const BASE_URL = 'http://localhost:5173';
 const TEST_RESULTS_DIR = './tests/mcp/results';
 const COMPREHENSIVE_REPORT = path.join(TEST_RESULTS_DIR, 'comprehensive-mcp-report.json');
 
@@ -81,7 +81,7 @@ async function runAdvancedMCPTests() {
   log('🔍 Checking development server...', 'blue');
   const serverRunning = await checkDevServer();
   if (!serverRunning) {
-    log('❌ Development server not running on port 5174', 'red');
+    log('❌ Development server not running on port 5173', 'red');
     log('   Please start the server with: npm run dev', 'yellow');
     return false;
   }

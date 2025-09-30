@@ -24,23 +24,47 @@
 ### 2. Dashboard Review & Management
 ```
 ✅ User Journey: View → Filter → Search → Approve/Reject
-- View all receipts in dashboard
-- Use search functionality
+- View all receipts in dashboard (desktop table view)
+- Test mobile card view transformation
+- Use search functionality across employee, vendor, description
 - Apply filters (status, category, date)
-- Sort by different columns
-- Approve/reject individual receipts
-- Perform bulk actions
-- View receipt details in modal
+- Sort by different columns (with Heroicon indicators)
+- Approve/reject individual receipts (conditional display)
+- Perform bulk actions with floating action bar
+- View receipt details in modal (two-column layout)
+- Test pagination with page indicators
+- Test responsive design across breakpoints
 ```
 
 ### 3. Responsive Design Flow
 ```
 ✅ User Journey: Desktop → Mobile → Tablet
 - Test on desktop (1024px+)
+  - Full table layout with all columns
+  - Floating bulk actions bar
+  - Page indicators in pagination
 - Test on tablet (768px-1023px)
+  - Compressed table layout
+  - Touch-friendly interactions
 - Test on mobile (< 640px)
-- Verify table transforms to cards on mobile
-- Test form usability on all screen sizes
+  - Table transforms to card layout
+  - Mobile-optimized pagination
+  - Touch-friendly form controls
+  - Condensed card information display
+```
+
+### 4. Modal and File Preview Flow
+```
+✅ User Journey: View Details → File Preview → Notes Management
+- Click on receipt row to open modal
+- Verify modal opens with smooth animation
+- Test two-column layout in modal
+- Click file thumbnail to open preview modal
+- Add notes and verify immediate display
+- Delete notes with confirmation dialog
+- Test modal close functionality
+- Verify semi-transparent backdrop
+- Test keyboard navigation in modal
 ```
 
 ---
@@ -180,7 +204,7 @@ describe('Edge Cases', () => {
 ### 1. Real Browser Happy Path Testing
 ```
 MCP Prompt: "Test the complete user journey from receipt submission to approval"
-- Navigate to http://localhost:5174/submit
+- Navigate to http://localhost:5173/submit
 - Fill out form with valid data
 - Upload a test file
 - Submit and verify success
@@ -197,11 +221,26 @@ MCP Prompt: "Test form validation by submitting invalid data"
 - Enter negative amount
 - Select future date
 - Upload invalid file type
+- Upload file too large
+- Enter empty vendor name
 - Verify all error messages appear
 - Verify form doesn't submit
+- Test error message positioning
 ```
 
-### 3. Performance & Responsive Testing
+### 3. Modal and File Preview Testing
+```
+MCP Prompt: "Test receipt details modal and file preview functionality"
+- Click on receipt row to open modal
+- Verify modal animation and backdrop
+- Test file thumbnail click to open preview
+- Add a note and verify immediate display
+- Delete a note with confirmation dialog
+- Test modal keyboard navigation
+- Verify two-column layout in modal
+```
+
+### 4. Performance & Responsive Testing
 ```
 MCP Prompt: "Test responsive design and performance"
 - Test on mobile viewport (< 640px)

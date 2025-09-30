@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Comprehensive Test Runner for Receipt Management System
+ * Comprehensive Test Runner for ClaimClam Receipt Management System
  * 
  * Runs all test suites: unit tests, integration tests, and MCP tests
  */
@@ -31,10 +31,10 @@ console.log = (...args) => {
   originalConsoleLog.apply(console, args);
 };
 
-console.log('🧪 Receipt Management System - Comprehensive Test Suite\n');
+console.log('🧪 ClaimClam Receipt Management System - Comprehensive Test Suite\n');
 
 // Test configuration
-const DEV_SERVER_URL = 'http://localhost:5174';
+const DEV_SERVER_URL = 'http://localhost:5173';
 const UNIT_TESTS = 'npm run test:run';
 const MCP_TESTS = 'npm run mcp:test';
 
@@ -118,7 +118,7 @@ async function runIntegrationTests() {
   // Test development server
   const serverRunning = await checkDevServer();
   if (!serverRunning) {
-    log('❌ Development server not running on port 5174', 'red');
+    log('❌ Development server not running on port 5173', 'red');
     log('   Please start the server with: npm run dev', 'yellow');
     return false;
   }

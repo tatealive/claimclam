@@ -1,10 +1,10 @@
 
 Test: Form Submission Performance
 Description: Test form submission performance
-URL: http://localhost:5174/submit
+URL: http://localhost:5173/submit
 
 Expected Actions:
-1. Navigate to http://localhost:5174/submit
+1. Navigate to http://localhost:5173/submit
 2. Start performance trace
 3. Perform user interactions
 4. Stop performance trace

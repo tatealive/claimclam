@@ -8,7 +8,7 @@
 
 import http from 'http';
 
-const BASE_URL = 'http://localhost:5174';
+const BASE_URL = 'http://localhost:5173';
 const TIMEOUT = 5000;
 
 // Helper functions

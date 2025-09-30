@@ -1,10 +1,10 @@
 
 Test: Dashboard Management Testing
 Description: Automate dashboard filtering, sorting, and bulk actions
-URL: http://localhost:5174/dashboard
+URL: http://localhost:5173/dashboard
 
 Expected Actions:
-1. Navigate to http://localhost:5174/dashboard
+1. Navigate to http://localhost:5173/dashboard
 2. Perform automated user interactions
 3. Wait for actions to complete
 4. Take screenshots at key points

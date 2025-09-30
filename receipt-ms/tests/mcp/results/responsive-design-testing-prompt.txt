@@ -1,10 +1,10 @@
 
 Test: Responsive Design Testing
 Description: Automate responsive design testing across viewports
-URL: http://localhost:5174
+URL: http://localhost:5173
 
 Expected Actions:
-1. Navigate to http://localhost:5174
+1. Navigate to http://localhost:5173
 2. Perform automated user interactions
 3. Wait for actions to complete
 4. Take screenshots at key points

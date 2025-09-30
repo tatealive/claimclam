@@ -4,10 +4,10 @@
 
 ### 1. Complete Receipt Submission Flow
 ```
-MCP Prompt: "Test the complete receipt submission workflow at http://localhost:5174"
+MCP Prompt: "Test the complete receipt submission workflow at http://localhost:5173"
 
 Expected Actions:
-1. Navigate to http://localhost:5174/submit
+1. Navigate to http://localhost:5173/submit
 2. Fill out the form with valid data:
    - Amount: $25.50
    - Date: Today's date
@@ -26,10 +26,10 @@ Expected Actions:
 
 ### 2. Dashboard Review and Management
 ```
-MCP Prompt: "Test the dashboard functionality at http://localhost:5174/dashboard"
+MCP Prompt: "Test the dashboard functionality at http://localhost:5173/dashboard"
 
 Expected Actions:
-1. Navigate to http://localhost:5174/dashboard
+1. Navigate to http://localhost:5173/dashboard
 2. Verify all receipts are displayed
 3. Test search functionality:
    - Search for "Test Vendor"
@@ -45,34 +45,48 @@ Expected Actions:
    - Sort by employee name
 6. Test bulk actions:
    - Select multiple receipts
+   - Verify floating bulk actions bar appears
    - Approve selected receipts
    - Reject selected receipts
 7. Test individual actions:
    - Click "View" on a receipt
-   - Verify modal opens with receipt details
+   - Verify modal opens with smooth animation
+   - Verify two-column layout in modal
+   - Test file preview functionality
    - Add a note to the receipt
+   - Delete a note with confirmation dialog
    - Close modal
-8. Take screenshot of dashboard
+8. Test responsive design:
+   - Resize browser to mobile viewport (< 640px)
+   - Verify table transforms to card layout
+   - Test mobile pagination controls
+   - Verify touch-friendly interactions
+9. Take screenshot of dashboard
 ```
 
 ### 3. Responsive Design Testing
 ```
-MCP Prompt: "Test responsive design at http://localhost:5174 on different viewport sizes"
+MCP Prompt: "Test responsive design at http://localhost:5173 on different viewport sizes"
 
 Expected Actions:
 1. Test desktop view (1920x1080):
    - Navigate to dashboard
-   - Verify table layout
-   - Test all functionality
+   - Verify table layout with all columns
+   - Test floating bulk actions bar
+   - Test pagination with page indicators
+   - Test Heroicon column headers
 2. Test tablet view (768x1024):
    - Resize browser to tablet dimensions
    - Verify layout adapts
    - Test form usability
+   - Test compressed table layout
 3. Test mobile view (375x667):
    - Resize browser to mobile dimensions
-   - Verify table becomes cards
+   - Verify table becomes card layout
+   - Test mobile pagination controls
    - Test form usability on mobile
    - Test navigation menu
+   - Verify condensed card information display
 4. Take screenshots of each viewport
 5. Verify touch interactions work
 ```
@@ -81,7 +95,7 @@ Expected Actions:
 
 ### 1. Form Validation Testing
 ```
-MCP Prompt: "Test form validation by submitting invalid data at http://localhost:5174/submit"
+MCP Prompt: "Test form validation by submitting invalid data at http://localhost:5173/submit"
 
 Expected Actions:
 1. Navigate to submit form
@@ -109,7 +123,7 @@ Expected Actions:
 
 ### 2. Network Error Simulation
 ```
-MCP Prompt: "Test application behavior under network stress at http://localhost:5174"
+MCP Prompt: "Test application behavior under network stress at http://localhost:5173"
 
 Expected Actions:
 1. Open Chrome DevTools Network tab
@@ -129,7 +143,7 @@ Expected Actions:
 
 ### 3. Browser Error Testing
 ```
-MCP Prompt: "Test browser error handling at http://localhost:5174"
+MCP Prompt: "Test browser error handling at http://localhost:5173"
 
 Expected Actions:
 1. Open Chrome DevTools Console
@@ -155,7 +169,7 @@ Expected Actions:
 
 ### 1. Boundary Value Testing
 ```
-MCP Prompt: "Test boundary values and edge cases at http://localhost:5174/submit"
+MCP Prompt: "Test boundary values and edge cases at http://localhost:5173/submit"
 
 Expected Actions:
 1. Test minimum valid amount ($0.01)
@@ -175,7 +189,7 @@ Expected Actions:
 
 ### 2. Concurrent User Testing
 ```
-MCP Prompt: "Test concurrent user scenarios at http://localhost:5174"
+MCP Prompt: "Test concurrent user scenarios at http://localhost:5173"
 
 Expected Actions:
 1. Open multiple tabs/windows
@@ -191,7 +205,7 @@ Expected Actions:
 
 ### 3. Performance Testing
 ```
-MCP Prompt: "Run performance audit on http://localhost:5174"
+MCP Prompt: "Run performance audit on http://localhost:5173"
 
 Expected Actions:
 1. Open Chrome DevTools Performance tab
@@ -216,7 +230,7 @@ Expected Actions:
 
 ### 1. Screen Reader Testing
 ```
-MCP Prompt: "Test accessibility with screen reader at http://localhost:5174"
+MCP Prompt: "Test accessibility with screen reader at http://localhost:5173"
 
 Expected Actions:
 1. Enable screen reader (if available)
@@ -239,7 +253,7 @@ Expected Actions:
 
 ### 2. Keyboard Navigation Testing
 ```
-MCP Prompt: "Test keyboard navigation at http://localhost:5174"
+MCP Prompt: "Test keyboard navigation at http://localhost:5173"
 
 Expected Actions:
 1. Navigate entire application using only keyboard

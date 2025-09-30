@@ -30,7 +30,7 @@ Based on the [Chrome DevTools MCP documentation](https://github.com/ChromeDevToo
 
 #### 1. Core Web Vitals Analysis
 ```
-MCP Prompt: "Analyze Core Web Vitals for the receipt management system at http://localhost:5174"
+MCP Prompt: "Analyze Core Web Vitals for the receipt management system at http://localhost:5173"
 
 Expected Actions:
 1. Start performance trace
@@ -49,7 +49,7 @@ Expected Actions:
 
 #### 2. Form Submission Performance
 ```
-MCP Prompt: "Test form submission performance at http://localhost:5174/submit"
+MCP Prompt: "Test form submission performance at http://localhost:5173/submit"
 
 Expected Actions:
 1. Start performance trace
@@ -66,7 +66,7 @@ Expected Actions:
 
 #### 3. Dashboard Rendering Performance
 ```
-MCP Prompt: "Test dashboard rendering performance with large datasets at http://localhost:5174/dashboard"
+MCP Prompt: "Test dashboard rendering performance with large datasets at http://localhost:5173/dashboard"
 
 Expected Actions:
 1. Start performance trace
@@ -85,7 +85,7 @@ Expected Actions:
 
 #### 1. Network Request Analysis
 ```
-MCP Prompt: "Analyze network requests for the receipt management system at http://localhost:5174"
+MCP Prompt: "Analyze network requests for the receipt management system at http://localhost:5173"
 
 Expected Actions:
 1. Open Network tab in DevTools
@@ -102,7 +102,7 @@ Expected Actions:
 
 #### 2. Console Error Monitoring
 ```
-MCP Prompt: "Monitor console errors and warnings at http://localhost:5174"
+MCP Prompt: "Monitor console errors and warnings at http://localhost:5173"
 
 Expected Actions:
 1. Clear console
@@ -119,7 +119,7 @@ Expected Actions:
 
 #### 3. JavaScript Execution Analysis
 ```
-MCP Prompt: "Analyze JavaScript execution and performance at http://localhost:5174"
+MCP Prompt: "Analyze JavaScript execution and performance at http://localhost:5173"
 
 Expected Actions:
 1. Start JavaScript profiling
@@ -138,7 +138,7 @@ Expected Actions:
 
 #### 1. Complete User Journey Automation
 ```
-MCP Prompt: "Automate complete user journey from receipt submission to approval at http://localhost:5174"
+MCP Prompt: "Automate complete user journey from receipt submission to approval at http://localhost:5173"
 
 Expected Actions:
 1. Navigate to submit form
@@ -156,7 +156,7 @@ Expected Actions:
 
 #### 2. Error Handling Automation
 ```
-MCP Prompt: "Automate error handling testing at http://localhost:5174/submit"
+MCP Prompt: "Automate error handling testing at http://localhost:5173/submit"
 
 Expected Actions:
 1. Navigate to submit form
@@ -172,7 +172,7 @@ Expected Actions:
 
 #### 3. Responsive Design Automation
 ```
-MCP Prompt: "Automate responsive design testing at http://localhost:5174"
+MCP Prompt: "Automate responsive design testing at http://localhost:5173"
 
 Expected Actions:
 1. Test desktop view (1920x1080)
@@ -190,7 +190,7 @@ Expected Actions:
 
 #### 1. Screenshot Comparison Testing
 ```
-MCP Prompt: "Take screenshots for visual regression testing at http://localhost:5174"
+MCP Prompt: "Take screenshots for visual regression testing at http://localhost:5173"
 
 Expected Actions:
 1. Take screenshot of home page
@@ -206,7 +206,7 @@ Expected Actions:
 
 #### 2. UI Component Testing
 ```
-MCP Prompt: "Test UI components visually at http://localhost:5174"
+MCP Prompt: "Test UI components visually at http://localhost:5173"
 
 Expected Actions:
 1. Test form components

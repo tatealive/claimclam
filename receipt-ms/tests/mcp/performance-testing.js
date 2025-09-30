@@ -10,7 +10,7 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-const BASE_URL = 'http://localhost:5174';
+const BASE_URL = 'http://localhost:5173';
 const TEST_RESULTS_DIR = './tests/mcp/results';
 const PERFORMANCE_REPORT = path.join(TEST_RESULTS_DIR, 'performance-report.json');
 

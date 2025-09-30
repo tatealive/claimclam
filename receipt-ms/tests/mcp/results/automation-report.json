@@ -1,6 +1,6 @@
 {
   "timestamp": "2025-09-27T01:59:09.301Z",
-  "baseUrl": "http://localhost:5174",
+  "baseUrl": "http://localhost:5173",
   "tests": [
     {
       "name": "Complete Receipt Submission Flow",

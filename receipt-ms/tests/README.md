@@ -8,13 +8,21 @@ This directory contains all test files organized by type and purpose.
 tests/
 ├── unit/                    # Unit tests
 │   ├── setup.ts            # Test environment setup
-│   └── receiptSchema.test.ts # Form validation tests
+│   ├── receiptSchema.test.ts # Form validation tests
+│   ├── receiptForm.test.tsx # Form component tests
+│   └── components.test.tsx  # General component tests
 ├── integration/             # Integration tests
-│   └── (future tests)      # API integration, component integration
+│   ├── happy-paths.test.js  # User workflow tests
+│   ├── error-cases.test.js  # Error handling tests
+│   └── form-submission.test.js # Form integration tests
 ├── mcp/                     # Chrome DevTools MCP tests
 │   ├── MCP_TEST_REPORT.md   # MCP test results
 │   ├── QUICK_MCP_SETUP.md   # Quick MCP setup guide
-│   └── TESTING_WITH_CHROME_DEVTOOLS_MCP.md # Comprehensive MCP guide
+│   ├── TESTING_WITH_CHROME_DEVTOOLS_MCP.md # Comprehensive MCP guide
+│   ├── automation-testing.js # Automated MCP tests
+│   ├── debugging-testing.js # Debug-focused MCP tests
+│   ├── performance-testing.js # Performance MCP tests
+│   └── results/             # Test result files
 └── run-all-tests.js         # Comprehensive test runner
 ```
 
@@ -132,4 +140,4 @@ npm run test:unit -- --reporter=verbose
 
 ---
 
-*This test organization ensures comprehensive coverage and easy maintenance of the Receipt Management System.*
+*This test organization ensures comprehensive coverage and easy maintenance of the ClaimClam Receipt Management System.*

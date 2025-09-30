@@ -13,7 +13,7 @@ const RouterWrapper = ({ children }: { children: React.ReactNode }) => (
 describe('Core Component Rendering', () => {
   it('App component renders without crashing', () => {
     render(<App />);
-    expect(screen.getByText('Receipt Management System')).toBeInTheDocument();
+    expect(screen.getByText('ClaimClam Receipt Management System')).toBeInTheDocument();
   });
 
   it('ReceiptSubmissionForm renders without crashing', () => {

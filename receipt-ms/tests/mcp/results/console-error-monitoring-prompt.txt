@@ -1,10 +1,10 @@
 
 Test: Console Error Monitoring
 Description: Monitor console errors and warnings
-URL: http://localhost:5174
+URL: http://localhost:5173
 
 Expected Actions:
-1. Navigate to http://localhost:5174
+1. Navigate to http://localhost:5173
 2. Perform debugging analysis
 3. Monitor system behavior
 4. Capture debugging data

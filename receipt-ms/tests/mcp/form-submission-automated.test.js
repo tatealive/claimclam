@@ -31,7 +31,7 @@ async function runAutomatedFormTest() {
   console.log(JSON.stringify(TEST_DATA, null, 2));
   
   console.log('\n🔧 Automated Test Steps:');
-  console.log('1. Navigate to http://localhost:5174/submit');
+  console.log('1. Navigate to http://localhost:5173/submit');
   console.log('2. Fill employee name: ' + TEST_DATA.employeeName);
   console.log('3. Fill amount: $' + TEST_DATA.amount);
   console.log('4. Set date: ' + TEST_DATA.date);

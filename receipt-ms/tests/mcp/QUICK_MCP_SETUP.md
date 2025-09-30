@@ -86,4 +86,4 @@ Once MCP is working, you can:
 
 ---
 
-*This setup allows you to test the Receipt Management System in a real browser environment with full debugging capabilities.*
+*This setup allows you to test the ClaimClam Receipt Management System in a real browser environment with full debugging capabilities.*

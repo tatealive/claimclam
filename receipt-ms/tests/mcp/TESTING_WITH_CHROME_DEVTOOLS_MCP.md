@@ -1,6 +1,6 @@
 # 🧪 Testing with Chrome DevTools MCP
 
-This guide explains how to use the Chrome DevTools Model Context Protocol (MCP) server to test and debug the Receipt Management System in real-time.
+This guide explains how to use the Chrome DevTools Model Context Protocol (MCP) server to test and debug the ClaimClam Receipt Management System in real-time.
 
 ## What is Chrome DevTools MCP?
 
@@ -111,7 +111,7 @@ Localhost:5173 is loading slowly. Make it load faster.
 - Identifies performance bottlenecks
 - Suggests optimizations
 
-## Specific Test Cases for Receipt Management System
+## Specific Test Cases for ClaimClam Receipt Management System
 
 ### Form Validation Testing
 
@@ -245,4 +245,4 @@ curl http://localhost:5173
 
 ---
 
-*This testing approach ensures our Receipt Management System works perfectly in real browser environments and provides excellent user experience.*
+*This testing approach ensures our ClaimClam Receipt Management System works perfectly in real browser environments and provides excellent user experience.*

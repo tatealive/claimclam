@@ -2,7 +2,7 @@
 
 ## System Overview
 
-The Receipt Management System is built as a single-page application (SPA) using React 18 with TypeScript, following modern frontend architecture patterns. The application is designed to be stateless on the server side, with all data persistence handled client-side through localStorage.
+The ClaimClam Receipt Management System is built as a single-page application (SPA) using React 18 with TypeScript, following modern frontend architecture patterns. The application is designed to be stateless on the server side, with all data persistence handled client-side through localStorage.
 
 ## 📊 System Flow Diagram
 
@@ -48,24 +48,36 @@ sequenceDiagram
 ### Component Hierarchy
 ```
 App
-├── Navigation
+├── AppNavbar
+│   ├── Brand (ClaimClam 🦪)
+│   ├── Catchphrase ("Let's claim some clams")
+│   └── Navigation Links
 ├── HomePage
 ├── ReceiptSubmissionForm
 │   ├── Form Fields (Amount, Date, Vendor, etc.)
-│   ├── File Upload Component
+│   ├── FilePreview Component
 │   └── Validation Messages
 └── ReviewDashboard
     ├── Search & Filter Controls
-    ├── Bulk Actions Bar
-    ├── TanStack Table
-    │   ├── Table Header (Sortable)
-    │   ├── Table Body (Rows)
-    │   └── Pagination Controls
+    ├── Mobile Card View (Responsive)
+    ├── Desktop Table View
+    │   ├── Table Header (Sortable with Heroicons)
+    │   ├── Table Body (Rows with fixed layout)
+    │   └── Pagination Controls (with page indicators)
+    ├── Floating Bulk Actions Bar
     └── ReceiptDetailsModal
-        ├── Receipt Information Display
-        ├── File Preview
-        ├── Notes Section
+        ├── Receipt Information Display (Two-column layout)
+        ├── FilePreview Component (with modal)
+        ├── Notes Section (with delete functionality)
         └── Action Buttons
+├── ConfirmationDialog
+│   ├── Title and Message
+│   ├── Action Buttons
+│   └── Variant Styling
+└── FilePreview
+    ├── Thumbnail Display
+    ├── File Type Indicators
+    └── Modal Preview
 ```
 
 ### Component Responsibilities
@@ -73,10 +85,12 @@ App
 | Component | Responsibility | Props | State |
 |-----------|---------------|-------|-------|
 | **App** | Routing, Layout, Navigation | - | Route state |
+| **AppNavbar** | Brand display, navigation, responsive design | - | Location state |
 | **ReceiptSubmissionForm** | Form handling, validation, submission | - | Form state, upload progress |
-| **ReviewDashboard** | Data display, filtering, bulk actions | - | Filter state, selection state |
-| **ReceiptDetailsModal** | Detailed view, notes, individual actions | `receipt`, `onClose` | Note input state |
-| **Navigation** | Route navigation, active state | - | Location state |
+| **ReviewDashboard** | Data display, filtering, bulk actions, responsive layout | - | Filter state, selection state, mobile view |
+| **ReceiptDetailsModal** | Detailed view, notes, individual actions | `receipt`, `onClose` | Note input state, modal state |
+| **ConfirmationDialog** | User confirmation for destructive actions | `isOpen`, `onClose`, `onConfirm`, `title`, `message`, `variant` | - |
+| **FilePreview** | File thumbnail display and modal preview | `fileName`, `width`, `height`, `showModal`, `className` | Modal state |
 
 ## 🔄 State Management Flow
 
@@ -92,6 +106,7 @@ interface ReceiptStore {
   deleteReceipt: (id: number) => void
   bulkUpdateStatus: (ids: number[], status: Receipt['status']) => void
   addNote: (id: number, note: string) => void
+  deleteNote: (id: number, noteIndex: number) => void
 }
 ```
 
@@ -187,12 +202,20 @@ Receipt[] → Fuse.js search → Filtered Receipt[]
 
 ### Test Structure
 ```
-src/test/
-├── setup.ts              # Test environment setup
-├── receiptSchema.test.ts  # Validation tests
-└── components/           # Component tests (future)
-    ├── ReceiptForm.test.tsx
-    └── Dashboard.test.tsx
+tests/
+├── unit/                    # Unit tests
+│   ├── setup.ts            # Test environment setup
+│   ├── receiptSchema.test.ts # Validation tests
+│   └── components.test.tsx  # Component tests
+├── integration/             # Integration tests
+│   ├── happy-paths.test.js  # User workflow tests
+│   ├── error-cases.test.js  # Error handling tests
+│   └── form-submission.test.js # Form integration tests
+├── mcp/                     # Chrome DevTools MCP tests
+│   ├── MCP_TEST_REPORT.md   # Test results
+│   ├── QUICK_MCP_SETUP.md   # Setup guide
+│   └── automation-testing.js # Automated MCP tests
+└── run-all-tests.js         # Comprehensive test runner
 ```
 
 ### Testing Strategy

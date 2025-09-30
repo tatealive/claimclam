@@ -9,7 +9,7 @@
 import { spawn } from 'child_process';
 import { setTimeout } from 'timers/promises';
 
-const BASE_URL = 'http://localhost:5174';
+const BASE_URL = 'http://localhost:5173';
 const TIMEOUT = 30000;
 
 // Test data for form submission
@@ -68,7 +68,7 @@ async function runFormSubmissionTest() {
   console.log(JSON.stringify(TEST_RECEIPT_DATA, null, 2));
   
   console.log('\n🔧 To test form submission manually:');
-  console.log('1. Open browser to http://localhost:5174/submit');
+  console.log('1. Open browser to http://localhost:5173/submit');
   console.log('2. Fill in the form with the test data above');
   console.log('3. Select category: Office Supplies');
   console.log('4. Select department: Engineering');
